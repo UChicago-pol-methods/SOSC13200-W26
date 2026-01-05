@@ -1,51 +1,53 @@
-# AI Use Policy for SOSC 13200
+# AI Policy + Expectations
 
-## Overview
+This course treats AI tools (including Claude Code) as **learning aids**, not substitutes for your own thinking. 
+You may use Claude Code to help you write, run, and debug code, but you are responsible for the **design, interpretation, and verification** of every result you submit. 
 
-AI tools like ChatGPT, Claude, and GitHub Copilot can be valuable learning aids when used appropriately. This policy outlines when and how you may use AI assistance in this course.
+---
 
-## Guiding Principle
+## 1) What’s allowed
 
-The goal of this course is for *you* to learn statistical reasoning and R programming. AI tools should support that learning, not replace it. If an AI writes your code or interprets your results, you haven't learned the skill—you've just produced an artifact.
+Use Claude Code to:
+- **Debug** errors and interpret error messages.
+- **Prototype** code and refactor for clarity.
+- Generate **tests/sanity checks** (e.g., missingness checks, balance tables, placebo tests, simulation checks).
+- Ask for **conceptual explanations** (e.g., “What does this estimand represent?” “What assumptions does this require?”).
+- Improve **reproducibility** (project structure, `renv`, scripts, README).
+- Safety **check** for linguistic errors or typos--as you would a spell check or grammar tool. 
 
-## Permitted Uses
+---
 
-You may use AI tools for:
+## 2) What’s required
 
-- **Debugging error messages**: "What does this error mean and how do I fix it?"
-- **Syntax help**: "How do I change the axis labels in ggplot2?"
-- **Explaining concepts**: "What is the difference between standard error and standard deviation?"
-- **Understanding existing code**: Asking an AI to explain what a code chunk does
-- **Data cleaning tasks**: Reshaping, merging, or reformatting datasets
+### A. Transparency: 
+For every assignment/project, you must submit:
+1) A short statement (5–15 lines) that includes:
+   - What (if anything) you asked Claude to do (at a high level).
+   - What you took on, changed, or rejected from Claude's suggestions.
 
-## Not Permitted
+### B. Verification:
+Some submissions will include **Verification** sections with checks, such as:
+- Reproduce the same quantity **two ways** (e.g., difference-in-means and regression).
+- A **small-n** or hand-check on a subset.
+- A **diagnostic plot/table** that would catch common mistakes.
 
-You may NOT use AI tools for:
+If your result cannot be verified and defended, it will not receive full credit.
 
-- **Writing analysis code for assignments**: You must write your own `lm()`, `ggplot()`, and other analysis code
-- **Interpreting your results**: The written interpretations in your assignments and final project must be your own
-- **Generating your final project report**: The analysis, interpretation, and writing must be your own work
+---
 
-## Disclosure Requirement
+## 3) What’s not allowed
 
-If you use AI assistance on any assignment, include a brief note at the end of your submission describing:
-1. Which AI tool you used
-2. What you used it for (e.g., "debugging a ggplot error," "understanding the subset() function")
+- Submitting AI-written narrative answers as your own without substantial original reasoning.
+- Turning in analyses you **cannot explain** (methods, assumptions, code, interpretation).
+- Hallucinated citations or results.
+- Using AI during any **closed-tool** assessment (in-class discussions, exams), unless explicitly permitted.
 
-Example:
-```
-AI Disclosure: I used Claude to help debug an error message when my
-read.csv() command failed. It explained that my file path was incorrect.
-```
+---
 
-No disclosure is needed if you did not use AI tools.
+## 4) Data, privacy, and responsible use
 
-## Why This Policy?
+- Do not paste sensitive/private data into AI tools. 
+- Keep your work in a dedicated course project folder/repo.
+- You are responsible for ensuring outputs are accurate; AI can be confidently wrong.
 
-Learning to program and do statistical analysis is like learning a language—you have to practice it yourself to become fluent. Watching someone else (or an AI) do it doesn't build the same skills.
-
-The debugging and syntax help that AI tools provide is similar to asking a TA or classmate for help, which has always been permitted. But having an AI write your analysis defeats the purpose of the assignment.
-
-## Academic Integrity
-
-Using AI for prohibited purposes (writing your analysis code or interpretations) constitutes a violation of academic integrity and will be treated accordingly. When in doubt, ask.
+---

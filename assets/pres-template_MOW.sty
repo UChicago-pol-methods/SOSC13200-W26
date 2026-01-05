@@ -2,52 +2,102 @@
 %\documentclass[notes=only, xcolor={dvipsnames}]{beamer}
 %\documentclass[notes, xcolor={dvipsnames}]{beamer}
 
-%--------------------------------------------------------------------------
-% Beamer settings  --------------------------------------------------
-%--------------------------------------------------------------------------
-
+% --- Beamer settings --------------------------------------------------------
 \mode<presentation>{\usetheme{default}}
-\definecolor{Maroon}{RGB}{128,0,0}
-\usecolortheme[named=Maroon]{structure}
 %\setbeamertemplate{note page}[infolines]
 
+% --- Color scheme -----------------------------------------------------------
+\RequirePackage{xcolor,hyperref,url}
 
-%empty footline
-%\setbeamertemplate{footline}[frame number] %adds frame numbers at bottom of page
-\setbeamertemplate{footline}[text line]{%
-  \parbox{\linewidth}{\vspace*{-8pt}\inserttitle,\ \insertdate\hfill\insertshortauthor\hfill\insertframenumber}}
-\setbeamertemplate{navigation symbols}{} %no navigation symbols
-%\setbeamertemplate{footline}{}% empties footline
+\definecolor{Maroon}{RGB}{128, 0, 0}
+\usecolortheme[named=Maroon]{structure}
+\definecolor{Contrast1}{RGB}{248,164,41} % Yellow
+\definecolor{Contrast1l}{RGB}{249,182,78} % Yellow light
+\definecolor{Contrast1d}{RGB}{198,130,32} % Yellow dark
 
+\definecolor{Contrast2}{RGB}{193,102,34} % Orange
+\definecolor{Contrast2l}{RGB}{211,147,99} % Orange light
+\definecolor{Contrast2d}{RGB}{154, 83,36} % Orange dark
 
-%boxes around results
+\definecolor{Contrast3}{RGB}{153,57,49} % Red
+\definecolor{Contrast3l}{RGB}{186,123,118} % Red light
+\definecolor{Contrast3d}{RGB}{109,50,39} % Red dark
+
+\definecolor{Contrast4}{RGB}{145,171,90} % Green
+\definecolor{Contrast4l}{RGB}{174,177,126} % Green light
+\definecolor{Contrast4d}{RGB}{101,109,51} % Green dark
+
+\definecolor{Contrast5}{RGB}{88,89,63} % Dark green
+\definecolor{Contrast5l}{RGB}{140,144,127} % Dark green light
+\definecolor{Contrast5d}{RGB}{70,72,51} % Dark green dark
+
+\definecolor{Contrast6}{RGB}{21,95,131} % Blue
+\definecolor{Contrast6l}{RGB}{91,150,173} % Blue light
+\definecolor{Contrast6d}{RGB}{21,67,95} % Blue dark
+
+\definecolor{Contrast7}{RGB}{53,14,32} % Violet
+\definecolor{Contrast7l}{RGB}{114,86,99} % Violet light
+
+\definecolor{Violator1}{RGB}{44,170,226} % Cyan
+\definecolor{Violator2}{RGB}{236,0,140} % Magenta
+
+\hypersetup{
+colorlinks=true,
+urlcolor=Contrast1,
+citecolor=Contrast1,
+linkcolor=Contrast1
+}
+
+\newenvironment{transitionframe}{
+  \setbeamercolor{background canvas}{bg=Maroon}
+  \begin{frame}[c]}{
+    \end{frame}
+}
+
+% --- Typography -------------------------------------------------------------
+\usepackage[default]{lato}
+
+% --- Environments -----------------------------------------------------------
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{10pt}}{\enditemize}
+
+% --- Beamer templates -------------------------------------------------------
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+\hfill\usebeamertemplate***{navigation symbols}
+\hspace{1cm}\insertframenumber{}}
+\setbeamertemplate{itemize items}{-}
+%\setbeamercolor{frametitle}{fg=Maroon}
+%\setbeamercolor{title}{fg=Maroon}
+%\setbeamercolor{itemize item}{fg=Maroon}
+%\setbeamercolor{itemize subitem}{fg=Maroon}
+%\setbeamercolor{enumerate item}{fg=Maroon}
+%\setbeamercolor{enumerate subitem}{fg=Maroon}
+%\setbeamercolor{button}{bg=MyBackground,fg=Maroon,}
+
+% --- Boxes around results (TikZ) -------------------------------------------
 \RequirePackage{tikz}
 \usetikzlibrary{matrix,shapes,arrows,fit,tikzmark}
 
-\tikzset{   
+\tikzset{
         every picture/.style={remember picture,baseline},
         every node/.style={anchor=base,align=center,outer sep=1.5pt},
         every path/.style={thick},
         }
 
 \newcommand\marktopleft[1]{%
-    \tikz[overlay,remember picture] 
+    \tikz[overlay,remember picture]
         \node (marker-#1-a) at (-.3em,.2em) {};%
 }
 \newcommand\markbottomright[1]{%
-    \tikz[overlay,remember picture] 
+    \tikz[overlay,remember picture]
         \node (marker-#1-b) at (.1em,.3em) {};%
     \tikz[overlay,remember picture,inner sep=1pt]
         \node[draw=red,fit=(marker-#1-a.north west) (marker-#1-b.south east)] {};%
 }
 
-
-%--------------------------------------------------------------------------
-% General  -------------------------------------------------------------
-%--------------------------------------------------------------------------
+% --- General packages -------------------------------------------------------
 \RequirePackage[utf8]{inputenc}
-% Equation formatting
-\RequirePackage{amsmath,amssymb,amsfonts} 
+\RequirePackage{amsmath,amssymb,amsfonts}
 \RequirePackage{amsthm}
 \RequirePackage{bbm}
 \RequirePackage{array}
@@ -55,42 +105,32 @@
 \RequirePackage{dcolumn}
 \RequirePackage{graphicx}
 \RequirePackage[round]{natbib}
-
-\RequirePackage{ulem}
-
-
+\RequirePackage[normalem]{ulem}
+\RequirePackage{siunitx}
 \RequirePackage{graphicx}
 \RequirePackage{epsfig}
 \RequirePackage{psfrag}
 \RequirePackage{wrapfig}
 \RequirePackage[all]{xy}
-\RequirePackage{multirow} \RequirePackage{rotating}
-
-
-\RequirePackage{framed}% allow frames for instructions
-\RequirePackage{adjustbox}% allow centering of images
+\RequirePackage{multirow}
+\RequirePackage{rotating}
+\RequirePackage{framed} % allow frames for instructions
+\RequirePackage{adjustbox} % allow centering of images
 \RequirePackage{subcaption}
-
-\RequirePackage{multicol}% multiple columns
+\RequirePackage{multicol} % multiple columns
 \setlength{\columnsep}{0.25cm}
 
-
-%--------------------------------------------------------------------------
-% Math boldface shortcuts, etc. ----------------------------------
-%--------------------------------------------------------------------------
-% Define new characters
+% --- Math boldface shortcuts ------------------------------------------------
 \def\Var{{\textrm{Var}}\,}
 \def\V{{\textrm V}\,}
 \def\E{{\textrm E}\,}
-\def\P{{\textrm P}\,}
-\def\Pr{{\textrm {Pr} }\,}
 \def\arg{{\textrm {arg} }\,}
 \def\Cov{{\textrm{Cov} }\,}
 \def\Cor{{\textrm{Cor} }\,}
 \def\N{{\textrm N}\,}
 \def\Supp{{\textrm {Supp} }\,}
 \DeclareMathOperator*{\argmin}{\arg\!\min}
-\DeclareMathOperator*{\argmax}{\arg\!\max}
+\DeclareMathOperator*{\argmax}{\textrm{arg}\,\textrm{max}}
 
 \newcommand{\A}{\mathbf{A}}\newcommand{\B}{\mathbf{B}}\newcommand{\C}{\mathbf{C}}
 \newcommand{\D}{\mathbf{D}}\newcommand{\F}{\mathbf{F}}\newcommand{\G}{\mathbf{G}}
@@ -147,9 +187,7 @@
 
 \newcommand{\indep}{\perp\!\!\!\!\perp}
 
-%--------------------------------------------------------------------------
-% allow new counter for back-up slides ------------------------
-%--------------------------------------------------------------------------
+% --- Backup slide counter ---------------------------------------------------
 \newcommand{\backupbegin}{
    \newcounter{finalframe}
    \setcounter{finalframe}{\value{framenumber}}
@@ -158,9 +196,7 @@
    \setcounter{framenumber}{\value{finalframe}}
 }
 
-%--------------------------------------------------------------------------
-% enumerate lists in notes -----------------------------------------
-%--------------------------------------------------------------------------
+% --- Enumerate lists in notes ----------------------------------------------
 \makeatletter
 \def\beamer@setupnote{%
   \gdef\beamer@notesactions{%
@@ -178,12 +214,7 @@
   }
 }
 
-
-
-%--------------------------------------------------------------------------
-% show previous slide on notes page --------------------------
-%--------------------------------------------------------------------------
-
+% --- Notes page template ----------------------------------------------------
 \RequirePackage{pgfpages}
 
 \makeatletter
@@ -233,13 +264,32 @@
     \makeatother
 
     \setbeamertemplate{note page}[infolines]
- \setbeamersize{text margin left=5mm,text margin right=5mm} 
- 
+ \setbeamersize{text margin left=5mm,text margin right=5mm}
 
+ %% don't work? It also requires to add manually every cite variant.
+\let\beameroldcite=\cite
+\renewcommand\cite[1]{\hyperlink{#1}{\beameroldcite{#1}}}
+\let\beameroldcitet=\citet
+\renewcommand\citet[1]{\hyperlink{#1}{\beameroldcitet{#1}}}
+\newcommand\citetfull[1]{\hyperlink{#1}{\beameroldcitet*{#1}}}
+\let\beameroldcitep=\citep
+\renewcommand\citep[1]{\hyperlink{#1}{\beameroldcitep{#1}}}
+\newcommand\citepfull[1]{\hyperlink{#1}{\beameroldcitep*{#1}}}
+\let\beameroldciteyear=\citeyear
+\renewcommand\citeyear[1]{\hyperlink{#1}{\beameroldciteyear{#1}}}
+\let\beameroldciteauthor=\citeauthor
+\renewcommand\citeauthor[1]{\hyperlink{#1}{\beameroldciteauthor{#1}}}
+\let\beameroldcitepalias=\citepalias
+\renewcommand\citepalias[1]{\hyperlink{#1}{\beameroldcitepalias{#1}}}
+\newcommand{\citepsmall}[1]{{\smaller\citep{#1}}}
+\newcommand{\citepsmallfull}[1]{{\smaller\citepfull{#1}}}
+\newcommand{\citeptitle}[1]{\hfill{\smaller[2]\citep{#1}}}
 
-%--------------------------------------------------------------------------
-% create custom underline ----------------------------------------
-%--------------------------------------------------------------------------
+\let\beameroldbibitem=\bibitem
+\renewcommand{\bibitem}[2][]{\label{#2}\beameroldbibitem[#1]{#2}}
+\providecommand{\newblock}{}
+
+% --- Custom underline -------------------------------------------------------
 \RequirePackage{contour}
 \RequirePackage{ulem}
 
@@ -251,15 +301,13 @@
   \llap{\contour{white}{#1}}%
 }
 
-
-
-
+% --- Stackengine and TikZ ---------------------------------------------------
 \RequirePackage{stackengine}
 %\RequirePackage{showframe}
 \usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
 
-\definecolor{links}{HTML}{2A1B81}
-
+% --- Table helpers ----------------------------------------------------------
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{multirow}
@@ -268,19 +316,21 @@
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 \interfootnotelinepenalty=10000
 
+% --- Larger delimiters ------------------------------------------------------
 \makeatletter
 %\newcommand{\vast}{\bBigg@{4}}
 \newcommand{\Vast}{\bBigg@{3}}
 \makeatother
 
-\renewcommand*{\thefootnote}{\fnsymbol{footnote}} %asterisk for footnote
+% --- Footnotes --------------------------------------------------------------
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}} % asterisk for footnote
+
+% --- Misc helpers -----------------------------------------------------------
 \RequirePackage{bm}
 \RequirePackage{setspace}
-
-\usetikzlibrary{arrows.meta}
-
 \def\diag{{\textrm {diag} }\,}
 
+% --- Vector arrow helpers ---------------------------------------------------
 \makeatletter
 \newlength\pvec@height
 \newlength\pvec@depth
@@ -298,11 +348,11 @@
     \coordinate (Arx) at (\pvec@width-.05em,0) ;
     \draw[->](Stx) to[bend right] (Arx);
     \end{tikzpicture}
-  }}}
+  }}}%
   #2
 }
 
-\newcommand{\pvecl}[2][]{%                   % for downward arrow
+\newcommand{\pvecl}[2][]{% for downward arrow
     \settoheight{\pvec@height}{$#2$}
     \settodepth{\pvec@depth}{$#2$}
     \settowidth{\pvec@width}{$#2$}
@@ -313,17 +363,8 @@
     \pgfsetroundcap
     \coordinate (Stx) at (.05em,0) ;
     \coordinate (Arx) at (\pvec@width-.05em,0) ;
-    \draw[->](Stx) to[bend left] (Arx);
+    \draw[->](Stx) to[bend right] (Arx);
     \end{tikzpicture}
-  }}}
+  }}}%
   #2
 }
-\makeatother
-
-
-
-\AtBeginNote{\hspace*{-10pt}\addtolength\leftmargini{-10pt}}
-\AtEndNote{\addtolength\leftmargini{10pt}}
-\RequirePackage{algorithmicx}
-\RequirePackage{algorithm}
-\RequirePackage{algpseudocode}
