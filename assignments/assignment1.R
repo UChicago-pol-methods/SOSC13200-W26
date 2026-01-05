@@ -3,7 +3,7 @@
 #' author: "<your name here>"
 #' date: "Friday 1/9/26 at 11:59pm"
 #' ---
-#
+#'
 #' # Course setup instructions:
 #'  
 #' To get started in R: 
@@ -39,18 +39,16 @@
 #' If you use Git, you can also use it later for pulls, but that is optional. 
 #' 
 #' c. Make sure that you have opened a version of this file that lives in the 
-#' `PLSC30600/code` folder. 
+#' `SOSC13200-W26/assignments` folder. 
 #' 
 #' Starting with your class folder, your directory structure should look like 
 #' this:
 #' 
 #' ```
-#' | -PLSC30600 
+#' | -SOSC13200-W26 
 #' | |- assets
 #' | |- assignments
 #' | | |-assignment1.R
-#' | |- code
-#' | | | -plsc30600_section_1.R
 #' | |- slides
 #' ```
 #' 
@@ -59,13 +57,14 @@
 #'
 #' ## 3. Set up Claude (optional).
 #' If you plan to use Claude Code, follow the instructions in
-#' `code/Install Claude Code...`.
+#' `assignments/claude-code-installation.md`.
+#' \url{https://github.com/UChicago-pol-methods/SOSC13200-W26/blob/main/assignments/claude-code-installation.md}
 #'
 #' ## 4. Compile this script from the correct location.
 #' Open this file from the local repo and "spin" it to PDF.
 #' In RStudio, click Knit/Spin to produce the PDF.
 
-#' Working directory (should be the `code/` folder in the course repository):
+#' Working directory (should be the `assignments/` folder in the course repository):
 getwd()
 
 #' Full recursive listing of files in the folder.
@@ -74,7 +73,7 @@ print(list.files(".", recursive = TRUE))
 #' Parent directory (one level up) to show the repo sits in the expected place.
 print(list.files("..", all.files = FALSE))
 
-# 3) If you will be using Claude Code:
+# ## 5. If you will be using Claude Code:
 #' Claude version (optional):
 #' Output should be something like `## 2.0.76 (Claude Code)`
 if (nzchar(Sys.which("claude"))) {
