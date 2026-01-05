@@ -1,0 +1,422 @@
+\documentclass[letterpaper, 12pt, parskip=full,DIV=10]{scrartcl}
+
+\title{SOSC 13200: Social Science Inquiry II. Section 3.}
+\subtitle{University of Chicago, Winter 2026.}
+
+\RequirePackage{assets/template_MOW}
+
+\begin{document}
+\nobibliography{assets/bib}
+\maketitle
+
+\vskip -10 ex
+
+\textbf{Location:} Cobb Hall 110\\
+\textbf{Course time:} Mon/Wed 15:00--16:20\\
+\textbf{Timeframe:} 01/05/2026--03/14/2026\\
+\textbf{Course github:} \url{https://github.com/UChicago-pol-methods/SOSC13200-W26}
+
+\textbf{Instructor:} Molly Offer-Westort; \href{mailto:mollyow@uchicago.edu}{mollyow@uchicago.edu}\\
+\textbf{Office hours:} Mon 13:20--14:40 and Tue 14:00--15:20; book at \url{https://calendar.app.google/wmSJFvfyxnDHFK5C9}\\
+\textbf{Office:} Pick Hall 328
+
+\paragraph{Course description and objectives.}
+In this course, you will learn to approach data thinking like a social scientist.
+That means thinking about where your data comes from and how it is measured, and assessing and describing relationships among variables.
+Throughout the course, you will be exposed to statistical tests and other quantitative methods used in social science research.
+You will also work on statistical software programming and data visualization.
+
+This session of the course focuses on the theme of the ``credibility revolution'' in the social sciences:
+a move toward empirical studies built with quality data, rigorous research design, and appropriate strategies for analysis.
+The impact of this work was recognized by the 2021 Nobel prize in economics, awarded to David Card, Joshua Angrist, and Guido Imbens.
+We will also consider the contributions of carefully designed field experiments, and the work of 2019 economics Nobel prize winners, Abhijit Banerjee, Esther Duflo, and Michael Kremer.
+
+\paragraph{Textbooks.}
+\begin{itemize}
+\item Probability \& Statistics:
+\begin{itemize}
+\item  Wackerly, Dennis, William Mendenhall, and Richard L. Scheaffer (2014). \textit{Mathematical Statistics with Applications}. Cengage Learning.
+\item For reference, not assigned \\
+\url{https://www.stat.berkeley.edu/~stark/SticiGui/index.htm}
+\end{itemize}
+\item Coding in R:
+\begin{itemize}
+\item Verzani, John. \textit{simpleR -- Using R for Introductory Statistics}. Online book: \url{https://cran.r-project.org/doc/contrib/Verzani-SimpleR.pdf}
+\item Wickham, Hadley, Danielle Navarro, and Thomas Lin Pedersen (2016). \textit{ggplot2: Elegant Graphics for Data Analysis}. Springer-Verlag. Online book: \url{https://ggplot2-book.org/}
+\end{itemize}
+\end{itemize}
+
+\paragraph{Mathematical proficiency.}
+It is not assumed that students have had prior exposure to probability and statistics, and this course will not use calculus or linear algebra.
+Familiarity with these topics may be useful for some of the extra reference readings, but this is not required.
+
+\paragraph{Statistical software.}
+The statistical software used in this iteration of this class will be R, which we will use along with the RStudio interface.
+R is a statistical language and environment for data manipulation, calculation, and visualization; the software for R and RStudio are free to download online.
+R can be a very flexible and powerful tool, and it is widely used in statistical and social science research, as well as in some industry settings.
+Instructors in other sessions of this course may use Stata, which is also widely used and relevant in particular in the fields of economics and public policy.
+In general, basic familiarity with R, Stata, and python can be useful for research in the social sciences.
+You are not assumed to have prior experience with R for this class.
+
+\paragraph{Computing.}
+You will need access to a computer throughout the quarter with R and RStudio installed.
+If you do not have access to a private computer to install this software, University library computers are equipped with RStudio, and you should be able to save your assignments on Box while using these computers.
+If you have any issues with access to a computer, please reach out to me and we will find a solution.
+
+\paragraph{Assignments.}
+Homework consists of weekly assignments, submitted in R with compiled reports.
+Homeworks are graded on a 0--3 scale: 0 (not submitted), 1 (check--), 2 (check), 3 (check+).
+Homeworks are worth 24 points total. Participation is worth 13 points. The in-class midterm is worth 18 points, the in-person final is worth 30 points, and the take-home final is worth 15 points.
+
+\begin{center}
+\begin{tabular}{l l l}
+\textbf{Component} & \textbf{Points} & \textbf{Due date} \\
+\hline
+Participation & 13 & -- \\
+Homework 1 & 3 & Fri, January 9 (11:59pm) \\
+Homework 2 & 3 & Fri, January 16 (11:59pm) \\
+Homework 3 & 3 & Fri, January 23 (11:59pm) \\
+Homework 4 & 3 & Fri, January 30 (11:59pm) \\
+Homework 5 & 3 & Fri, February 6 (11:59pm) \\
+Homework 6 & 3 & Fri, February 13 (11:59pm) \\
+Homework 7 & 3 & Fri, February 20 (11:59pm) \\
+Homework 8 & 3 & Fri, February 27 (11:59pm) \\
+Midterm (in class) & 18 & Wed, February 4 \\
+Final (in person) & 30 & Exam week (TBA) \\
+Final (take home) & 15 & Fri, March 6 (11:59pm) \\
+\end{tabular}
+\end{center}
+
+\paragraph{Accommodations.}
+Please reach out to me directly if you would like to request accommodations for the course to better facilitate your learning.
+Student Disability Services (\url{https://disabilities.uchicago.edu/}) is also available to provide you resources and support, and may provide approval for specific academic accommodations.
+Informing me in a timely manner will help me to ensure accommodations are met and I am able to implement an appropriate assessment of your learning.
+
+\paragraph{Academic honesty.}
+All students are expected to be familiar with and follow the University\textquotesingle s academic honesty policies (\url{https://studentmanual.uchicago.edu/academic-policies/academic-honesty-plagiarism/}). 
+No citation is required for code generated by AI, but you are responsible for understanding the code and ensuring it works correctly. 
+You will be asked to provide input on our class AI policy, and then will be expected to follow it: \url{https://github.com/UChicago-pol-methods/SOSC13200-W26/blob/main/ai-policy.md}. 
+
+\section*{Course outline.}
+
+\subsection*{Week 1: Course introduction.}
+\subsubsection*{Class 1.1 (Monday 1/5).}
+\begin{itemize}
+\item Overview of course objective: how to formalize and test a theory with data and statistical tools.
+\item Some motivating examples.
+\item Introduction to coding: what the software will be, how you will download it, basics of setting yourself up with good directory hygiene.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{tabarrok2021credibility}
+\end{itemize}
+
+\subsubsection*{Learning R.}
+\begin{itemize}
+\item On your own, set up the swirl course on ``R Programming with Email Notification'' \url{https://github.com/UChicago-pol-methods/swirl}
+\item Run the following code: \texttt{install.packages("swirl"); library(swirl); install\_course("R Programming E"); swirl()}
+\item Complete sections 1 (Basic Building Blocks) and 2 (Workspace and Files).
+\end{itemize}
+
+\subsubsection*{Class 1.2 (Wednesday 1/7).}
+\begin{itemize}
+\item What kinds of questions can we want to ask in social science research?
+How do we start formalizing a question that is tractable and falsifiable?
+What population is the question in reference to?
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{holland1986statistics} Skip sections 5, 8.2.
+\item \bibentry{king1994designing} Chapter 1.
+\end{itemize}
+
+\textbf{Homework 1 due Friday 1/9 at 11:59pm:}
+Install and set up statistical software and class working directory on your computer.
+Submit a compiled R document in pdf with your name and date, showing the file working directory.
+
+\subsection*{Week 2: Summarizing data numerically and visually.}
+\subsubsection*{Class 2.1 (Monday 1/12).}
+\begin{itemize}
+\item Working with the Card and Krueger dataset, summarizing data numerically.
+Summaries of univariate data (sample mean, sample median, quantiles, sample variance, sample standard deviation).
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{cardkrueger1994minimum}
+\item We will come back to this paper again later this quarter to discuss the content and results; for this first pass, we will just focus on the data.
+\end{itemize}
+
+\subsubsection*{Learning R.}
+\begin{itemize}
+\item In swirl, complete sections 3 (Sequences of Numbers), 4 (Vectors), 5 (Missing Values).
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Wackerly et al. Chapter 1: What is Statistics?
+\end{itemize}
+
+\subsubsection*{Class 2.2 (Wednesday 1/14).}
+\begin{itemize}
+\item Working with the Card and Krueger dataset, summarizing data visually.
+\item Graphical representation of different types of univariate data: histograms, density plots, boxplot, bar charts.
+\item Challenges with measurement.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{adcockcollier2001measurement}
+\end{itemize}
+
+\subsubsection*{Learning R.}
+\begin{itemize}
+\item ggplot2 book Chapter 2: First steps.
+\end{itemize}
+
+\textbf{Homework 2 due Friday 1/16 at 11:59pm:}
+Submit a compiled R document in pdf with your name and date.
+Load in Card and Krueger dataset, and produce specified summary statistics and a plot.
+
+\subsection*{Week 3: Probability as a model of the world.}
+\textit{No class Monday 1/19 (MLK Day).}
+\subsubsection*{Class 3.1 (Wednesday 1/21).}
+\begin{itemize}
+\item How do we think about what it means for something to be random? Why is this mathematical abstraction useful for social science research?
+\item Overview of discrete probability.
+\item Conditional probability, Bayes Rule.
+\item Why understanding conditional probability is essential to understanding social phenomena, and why relying on your intuition can be wrong.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{stark2003earthquake}
+\item \bibentry{buchanan2007prosecutor} \url{https://statmodeling.stat.columbia.edu/2007/05/18/the_prosecutors/}
+\item \bibentry{hill2004sudden} \url{https://onlinelibrary.wiley.com/doi/10.1111/j.1365-3016.2004.00560.x}
+\end{itemize}
+
+\subsubsection*{Learning R.}
+\begin{itemize}
+\item In swirl, complete sections 6 (Subsetting Vectors), 7 (Matrices and Data Frames), 8 (Logic), and 9 (Functions).
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Wackerly et al. Chapter 2: Probability; 2.1--2.4, 2.7, 2.10--2.13.
+\end{itemize}
+
+\textbf{Homework 3 due Friday 1/23 at 11:59pm:}
+Exercises in defining sample space, mapping events to probabilities.
+Using \texttt{sample()} to simulate random processes in R.
+
+\subsection*{Week 4: Joint relationships.}
+\subsubsection*{Class 4.1 (Monday 1/26).}
+\begin{itemize}
+\item Using Angrist \& Krueger data to discuss identifying patterns in data, covariance, correlation.
+\item Education and earnings are correlated; preview correlation vs. causation with respect to the effect of education on earnings.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{angrist1991does}
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Wackerly et al. Chapter 3: Discrete Random Variables and Their Probability Distributions; 3.1--3.3.
+\item Wackerly et al. Chapter 5: Multivariate probability distributions; 5.1--5.4, 5.7 (ignore continuous distributions).
+\end{itemize}
+
+\subsubsection*{Class 4.2 (Wednesday 1/28).}
+\begin{itemize}
+\item Using Miguel and Kremer data, conditional means, difference in means.
+\item Data visualization: scatterplots, plotting conditional expectation function, faceting plots by category.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{ba2021role}
+\item \bibentry{miguel2004worms}
+\item Additional content on the ``Worm Wars'' regarding replication issues with Miguel \& Kremer; you do not need to read or listen to all of this:
+\begin{itemize}
+\item \bibentry{vox2015wormwars}
+\item \url{https://www.vox.com/2015/7/24/9031909/worm-wars-explained}
+\item \bibentry{maintenancephase2021wormwars}
+\item \url{https://open.spotify.com/episode/7ujpdCPK5hKPgUYDGV87aV?si=nmXeJSqnR0aRlF5S3gMP9g}
+\end{itemize}
+\end{itemize}
+
+\subsubsection*{Learning R.}
+\begin{itemize}
+\item Verzani, Chapter 4: Bivariate Data, pp. 32--40.
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Huntington-Klein, Nick (2021). \textit{The Effect}. Chapter 5.
+\end{itemize}
+
+\textbf{Homework 4 due Friday 1/30 at 11:59pm:}
+Data exploration, visualizing joint relationships.
+
+\subsection*{Week 5: Uncertainty and inference.}
+\subsubsection*{Class 5.1 (Monday 2/2).}
+\begin{itemize}
+\item Using Butler and Broockman data, randomization inference, introduction to hypothesis testing, confidence intervals, p-values and statistical significance.
+\item Sampling from a larger population; central limit theorem, one- and two-sample t-tests.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{butler2011politicians}
+\item \bibentry{gerber2012field} Chapter 3: Sampling Distributions, Statistical Inference, and Hypothesis Testing, Sections 3.1--3.5, pp. 51--70.
+\item \bibentry{pager2003mark}
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Athey, S., \& Imbens, G. (2017). ``The Econometrics of Randomized Experiments.'' In A. V. Banerjee and E. Duflo, editors, \textit{Handbook of Field Experiments}, 1, pp. 73--140. North-Holland.
+\item Wackerly et al. Chapter 7: Sampling Distributions and the Central Limit Theorem; 7.1--7.3.
+\item Wackerly et al. Chapter 8: Estimation; 8.5--8.6.
+\end{itemize}
+
+\subsubsection*{Class 5.2 (Wednesday 2/4).}
+\begin{itemize}
+\item In-class midterm.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item No readings.
+\end{itemize}
+
+\textbf{Homework 5 due Friday 2/6 at 11:59pm:}
+Re-create the Pager data based on the description in the text.
+Formalize in words what hypotheses are being tested.
+Conduct the statistical analyses described.
+What is the reference population?
+Are these results generalizable? Why or why not?
+
+\textbf{Homework 6 due Friday 2/13 at 11:59pm:}
+Replication of Butler and Broockman.
+What statistical tests are being used?
+How do you interpret the regression coefficients?
+
+\subsection*{Week 6: Bivariate regression: best linear predictor.}
+\subsubsection*{Class 6.1 (Monday 2/9).}
+\begin{itemize}
+\item With Butler and Broockman data, regression as the best linear predictor, least squares visually demonstrated.
+\item Interpreting regression coefficients.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{buenodemesquita2021thinking} Chapter 5: Regression for Describing and Forecasting.
+\end{itemize}
+
+\subsubsection*{Class 6.2 (Wednesday 2/11).}
+\begin{itemize}
+\item Inference for linear regression.
+\item Linear regression with experiments and dummy variables; relationship to t-tests.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item None; spend this time working on researching data for your projects.
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Huntington-Klein, Nick (2021). \textit{The Effect}. Chapter 13.1; 13.2 through 13.2.5 inclusive only.
+\item Wackerly et al. Chapter 11: Linear Models and Estimation by Least Squares; 11.1--11.4.
+\end{itemize}
+
+\subsection*{Week 7: Multivariate regression: model building.}
+\subsubsection*{Class 7.1 (Monday 2/16).}
+\begin{itemize}
+\item Regression as linearization of conditional expectation function.
+\item With Banerjee et al. data, interpreting regression coefficients (and standard errors) in multivariate regression.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{banerjee2015miracle}
+\end{itemize}
+
+\subsubsection*{Statistical reference (not required).}
+\begin{itemize}
+\item Wackerly et al. Chapter 11: Linear Models and Estimation by Least Squares; 11.11--11.12.
+\end{itemize}
+
+\subsubsection*{Class 7.2 (Wednesday 2/18).}
+\begin{itemize}
+\item When can we apply causal interpretations to regression coefficients from observational data?
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{cardkrueger1994minimum}
+\item Now we will come back to this paper, and look at their approach to analysis.
+\item \bibentry{gerber2014illusion}
+\end{itemize}
+
+\textbf{Homework 7 due Friday 2/20 at 11:59pm: Case File 1 (Data + design audit).}
+Short memo + reproducible R output on data provenance, unit of analysis, population, missingness, and core descriptive tables/plots.
+
+\subsection*{Week 8: Regression: inference, challenges to inference, and external validity.}
+\subsubsection*{Class 8.1 (Monday 2/23).}
+\begin{itemize}
+\item Pitfalls of p-values and hypothesis testing; what is the alternative?
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{amrhein2019retire}
+\item \bibentry{gerbermalhotra2008}
+\end{itemize}
+
+\subsubsection*{Class 8.2 (Wednesday 2/25).}
+\begin{itemize}
+\item Statistical power, effect sizes, sample size.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{coppock2022power}
+\item \bibentry{lakens2022samplesize}
+\end{itemize}
+
+\textbf{Homework 8 due Friday 2/27 at 11:59pm: Case File 2 (Primary analysis + interpretation).}
+Short memo + reproducible R output with bivariate and multivariate regression, an alternate specification, and interpretation with visuals.
+
+\subsection*{Week 9: Moving beyond multiple linear regression: other approaches.}
+\subsubsection*{Class 9.1 (Monday 3/2).}
+\begin{itemize}
+\item Different types of research questions: prediction, heterogeneity.
+\item Some alternative tools, and how machine learning is used in the social sciences.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{lundberg2020estimand}
+\item \bibentry{athey2019machine}
+\end{itemize}
+
+\subsubsection*{Class 9.2 (Wednesday 3/4).}
+\begin{itemize}
+\item Declaring hypotheses in advance / pre-analysis planning.
+\end{itemize}
+
+\subsubsection*{Readings.}
+\begin{itemize}
+\item \bibentry{chen2021preanalysis}
+\item \bibentry{monogan2015preregistration}
+\end{itemize}
+
+\paragraph{Take-home final (project components, exam-structured).}
+The take-home component of the final assessment is a take-home exam that uses either the same capstone dataset with new prompts and a required extension, or a fresh but similar dataset (TBA).
+You will submit a PDF report (R/Rmd to PDF) plus source files; the prompt will include data/measurement, descriptives/visualization, modeling/inference, credibility reflection, and a short bridge-to-next-quarter experiment component.
+
+\end{document}
