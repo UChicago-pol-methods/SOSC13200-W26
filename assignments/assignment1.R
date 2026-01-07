@@ -62,10 +62,15 @@
 #'
 #' ## 4. Compile this script from the correct location.
 #' Open this file from the local repo and "spin" it to PDF.
-#' In RStudio, click Knit/Spin to produce the PDF.
+#' In RStudio, click Compile (Looks like a Notepad Next to the Magnifying Glass) to produce the PDF.
+
+#' *Commands in RStudio Console* (Install packages as they come up when running these)
 
 #' Working directory (should be the `assignments/` folder in the course repository):
 getwd()
+
+#' If you need to change your directory to the `assignments/` folder, use the following command:
+setwd(<YOUR PATH>)
 
 #' Full recursive listing of files in the folder.
 print(list.files(".", recursive = TRUE))
