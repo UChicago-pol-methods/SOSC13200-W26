@@ -62,7 +62,7 @@
 #'
 #' ## 4. Compile this script from the correct location.
 #' Open this file from the local repo and "spin" it to PDF.
-#' In RStudio, click Knit/Spin to produce the PDF.
+#' In RStudio, click Compile (Looks like a Notepad Next to the Magnifying Glass) to produce the PDF.
 
 #' Working directory (should be the `assignments/` folder in the course repository):
 getwd()
