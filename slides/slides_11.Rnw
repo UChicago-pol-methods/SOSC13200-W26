@@ -271,7 +271,7 @@ Programming in R.\pause
 
 \begin{itemize}
 \item Google! \pause
-\item Ask on our course StackOverflow team: \url{https://stackoverflowteams.com/c/sosc13200-w26-3} \pause {[}I'll send invites shortly{]}  \pause
+\item Ask on our course StackOverflow team: \url{https://stackoverflowteams.com/c/sosc13200-26-3} \pause {[}I'll send invites shortly{]}  \pause
 \item Use general StackOverflow (\url{https://stackoverflow.com/}) for \texttt{R} questions or CrossValidated (\url{https://stats.stackexchange.com/}) for stats. \pause
 \item Use Claude Code—our class has access to it!—for coding help as well.
 \end{itemize}
