@@ -1,13 +1,32 @@
 #' ---
-#' title: "In-class 2.2, Social Science Inquiry II (SOSC13200-W24-6)"
+#' title: "In-class 2.2, Social Science Inquiry II (SOSC13200-W26-3)"
 #' author: "Molly Offer-Westort"
-#' date: "Wednesday 1/10/24"
+#' date: "Wednesday 1/14/26"
 #' ---
 
 # install.packages("ggplot2") # Uncomment this the first time you run it, but 
 # after you have installed, comment it again. 
 # You only need to install a package once
 library(ggplot2) # But packages you use need to be loaded every session
+
+#' ## Reading in the data 
+#' You can read in data locally
+dat <- read.csv("../data/card-krueger.csv", as.is = TRUE)
+
+#' OR you can give the file address as a location on the internet. 
+#' Here it's listed from the location on the class GitHub repository. 
+file <- "https://raw.githubusercontent.com/UChicago-pol-methods/SOSC13200-W26/main/data/card-krueger.csv"
+dat1 <- read.csv(file, as.is = TRUE)
+
+identical(dat, dat1) # are the files identical?
+
+rm(dat1) # remove the extra data set, we only want one. 
+
+#' Look at the README file for the Card & Krueger data. This will tell you 
+#' what is going on with the different variables,and how they're coded. 
+#' 
+#' https://github.com/UChicago-pol-methods/SOSC13200-W26/blob/main/data/card-krueger_readme.txt
+#' 
 
 #' Now, we'll use subsetting to select the wave 1 and wave 2
 #' data

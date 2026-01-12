@@ -1,7 +1,7 @@
 #' ---
-#' title: "In-class 2.1, Social Science Inquiry II (SOSC13200-W24-6)"
+#' title: "In-class 2.1, Social Science Inquiry II (SOSC13200-W26-3)"
 #' author: "Molly Offer-Westort"
-#' date: "Monday 1/8/22"
+#' date: "Monday 1/12/26"
 #' ---
 #' 
 #' This class, we'll be exploring the Card & Krueger data and considering 
@@ -24,7 +24,7 @@ rm(dat1) # remove the extra data set, we only want one.
 #' Look at the README file for the Card & Krueger data. This will tell you 
 #' what is going on with the different variables,and how they're coded. 
 #' 
-#' https://github.com/UChicago-pol-methods/SOSC13200-W24/blob/main/data/card-krueger_readme.txt
+#' https://github.com/UChicago-pol-methods/SOSC13200-W26/blob/main/data/card-krueger_readme.txt
 #' 
 
 #' ## Summarizing the data set 
@@ -200,4 +200,3 @@ table(dat$type[which(dat$d ==1)])
 #' 
 #' Which variable has the most missing data? For this variable, how many 
 #' observations are missing for NJ, vs PA? 
-
