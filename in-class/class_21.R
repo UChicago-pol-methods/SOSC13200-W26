@@ -3,7 +3,11 @@
 #' author: "Molly Offer-Westort"
 #' date: "Monday 1/8/22"
 #' ---
-
+#' 
+#' This class, we'll be exploring the Card & Krueger data and considering 
+#' ways to summarize univariate (or single variable) data. 
+#' 
+#' 
 #' ## Reading in the data 
 #' You can read in data locally
 dat <- read.csv("../data/card-krueger.csv", as.is = TRUE)
@@ -17,6 +21,11 @@ identical(dat, dat1) # are the files identical?
 
 rm(dat1) # remove the extra data set, we only want one. 
 
+#' Look at the README file for the Card & Krueger data. This will tell you 
+#' what is going on with the different variables,and how they're coded. 
+#' 
+#' https://github.com/UChicago-pol-methods/SOSC13200-W24/blob/main/data/card-krueger_readme.txt
+#' 
 
 #' ## Summarizing the data set 
 
@@ -79,7 +88,6 @@ id2[which(id2>400)]
 which(id2>400 & id2 < 410)
 id2[which(id2>400 & id2 < 410)]
 id2[id2>400 & id2 < 410]
-
 
 #' Using table(), sum(), mean(), and other summary functions
 
@@ -173,6 +181,7 @@ table(dat$status[which(dat$d == 1)], dat$nj[which(dat$d == 1)])
 
 table(dat$type[which(dat$d ==1)])
 
+#' ## Further analysis
 
 
 #' ## Exercises
