@@ -21,7 +21,7 @@ Use Claude Code to:
 
 ### A. Transparency: 
 For every assignment/project, you must submit:
-1) A short statement (5–15 lines) that includes:
+1) A short statement (2–5 lines) that includes:
    - What (if anything) you asked Claude to do (at a high level).
    - What you took on, changed, or rejected from Claude's suggestions.
 
