@@ -18,13 +18,13 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE, prefix.string = figs31/}
 
 \nocite{aronow2019foundations,wasserman2004all,hernan2010causal}
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo=FALSE>>=
-if(!dir.exists('figs31')){dir.create('figs31')}
+knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs31/")
+if (!dir.exists("figs31")) dir.create("figs31")
 @
 
 %-------------------------------------------------------------------------------%
@@ -1038,7 +1038,7 @@ We can plot a histogram to look at the distribution of results.
 
 \begin{figure}
 \centering
-<<fig = TRUE, width = 5, height = 3.5>>=
+<<fig.width = 5, fig.height = 3.5>>=
 ggplot(data.frame(result_n), aes(x = result_n)) +
   geom_histogram(bins = 3, color = 'white', fill = 'lightgreen') +
   theme_bw() + xlab('Number heads')
@@ -1107,7 +1107,7 @@ $$
 \tiny
 \begin{figure}
 \centering
-<<fig = TRUE, width = 5, height=3.8, echo=FALSE>>=
+<<fig.width = 5, fig.height =3.8, echo=FALSE>>=
 plotdata <- data.frame(
   x = c(-1, 0, 1, 2),
   xend = c(0, 1, 2, 3),
@@ -1193,7 +1193,7 @@ CDFs are really useful, because if we know the CDF, we can fully describe the di
 
 \begin{figure}
 \centering
-<<fig = TRUE, width = 5, height=3.8, echo=FALSE>>=
+<<fig.width = 5, fig.height =3.8, echo=FALSE>>=
 ggplot(plotdata, aes(x = x, y = Fx)) +
   geom_segment(aes(x = x, y = Fx, xend = xend, yend = Fx)) +
   geom_point() +
@@ -1227,7 +1227,7 @@ And we can use \texttt{ggplot2} to see what the \textit{Empirical} CDF looks lik
 \tiny
 \begin{figure}
 \centering
-<<fig = TRUE, width = 5, height=3.5>>=
+<<fig.width = 5, fig.height =3.5>>=
 
 ggplot(data.frame(result_n), aes(x = result_n)) +
   stat_ecdf() +
@@ -1434,7 +1434,7 @@ p2 <- ggplot(result_mat) +
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]
 \tiny
-<<fig = TRUE, width = 6, height=3.5>>=
+<<fig.width = 6, fig.height =3.5>>=
 grid.arrange(p1, p2, ncol = 2)
 @
 
@@ -1508,7 +1508,7 @@ $X = 1$ & $1/2$ & $1/4$ &$\bm{3/4}$ \\
 \begin{figure}
 \centering
 \resizebox{.5\textwidth}{!}{
-<<fig = TRUE, width = 6, height=6, echo=FALSE>>=
+<<fig.width = 6, fig.height =6, echo=FALSE>>=
 hist_top <- p1
 empty <- ggplot() + geom_point(aes(1,1), colour="white") +
   theme(axis.ticks=element_blank(),
@@ -1700,7 +1700,7 @@ Visually,
 \begin{figure}
 \centering
 \resizebox{.75\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 plotdata <- data.frame(
   x = c(0, 1),
   fx = c(1/2, 1/2)
@@ -1823,7 +1823,7 @@ The variance is the average squared distance from the mean. The standard deviati
 \begin{figure}
 \centering
 \resizebox{.7\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 
 ggplot(plotdata, aes(x = x, y = fx)) +
   geom_point() +
@@ -1865,7 +1865,7 @@ The variance is the average squared distance from the mean. The standard deviati
 \begin{figure}
 \centering
 \resizebox{.7\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 
 ggplot(plotdata, aes(x = x, y = fx)) +
   geom_point() +
@@ -1909,7 +1909,7 @@ The variance is the average squared distance from the mean. The standard deviati
 \begin{figure}
 \centering
 \resizebox{.7\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 
 ggplot(plotdata, aes(x = x, y = fx)) +
   geom_point() +
@@ -1990,7 +1990,7 @@ Let's take a look at the mean.
 \begin{figure}
 \centering
 \resizebox{.55\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 plotdata <- data.frame(
   x = c(0, 1, 2),
   xend = c(1, 2, 3),
@@ -2052,7 +2052,7 @@ And the spread.
 \begin{figure}
 \centering
 \resizebox{.55\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 ggplot(plotdata, aes(x = x, y = fx)) +
   geom_point() +
   coord_cartesian(xlim = c(-0.8, 2.8),
@@ -2111,7 +2111,7 @@ And the spread.
 \begin{figure}
 \centering
 \resizebox{.55\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 
 ggplot(plotdata, aes(x = x, y = fx)) +
   geom_point() +
@@ -2168,7 +2168,7 @@ And the spread.
 \begin{figure}
 \centering
 \resizebox{.55\textwidth}{!}{
-<<fig = TRUE, width = 5, height=5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 
 sdx <- sqrt(sum((plotdata$x-Ex)^2 * plotdata$fx))
 

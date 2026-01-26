@@ -1,4 +1,4 @@
-\documentclass[xcolor={dvipsnames}, handout]{beamer}
+\documentclass[xcolor={dvipsnames}]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 
@@ -17,7 +17,11 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
+<<setup, include=FALSE>>=
+knitr::opts_chunk$set(concordance = TRUE)
+@
+
 
 %-------------------------------------------------------------------------------%
 \frame{\titlepage
@@ -57,7 +61,7 @@ How would you answer these questions with the \cite{card1993minimum} paper?
 
 %-------------------------------------------------------------------------------%
 
-\begin{frame}{(Reviewing) Group discussion}
+\begin{frame}{(Reviewing)}
 
 \begin{itemize}
 \item Is social science \textit{science}? Justify your answer. 

@@ -17,7 +17,11 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
+<<setup, include=FALSE>>=
+knitr::opts_chunk$set(concordance = TRUE)
+@
+
 
 %-------------------------------------------------------------------------------%
 \frame{\titlepage
