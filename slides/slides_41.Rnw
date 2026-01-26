@@ -290,32 +290,29 @@ if(!file.exists('figs41/-plot_basic.pdf')){
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Data exploration: Education on birth year}
 
-<<eval = FALSE>>=
+\scriptsize
+<<explore = FALSE>>=
 ggplot(dat[sample(1:nrow(dat), 1e3),], aes(x = year_of_birth, y = education)) +
-  geom_jitter(width = 0.2, height = 0.2, alpha = 0.2) +
+  geom_jitter(width = 0.2, height = 0.2, alpha = 0.2) + # jittered points
   scale_y_continuous(breaks = seq(0, 20, 2)) + 
   scale_x_continuous(breaks = seq(30, 40, 2)) +
-  labs(x = 'Year of birth', y = 'Years of completed education') +
-  theme_bw()
-  
-@
-
-
-<<plot_basic, include = FALSE, echo = FALSE>>=
-if(!file.exists('figs41/-plot_basic.pdf')){
-  g <- ggplot(dat, aes(x = year_of_birth, y = education)) +
-    geom_point()
-  ggsave('figs41/-plot_basic.pdf', g, width = 6, height=6)
-}
+  labs(x = 'Year of birth', y = 'Years of completed education')
 @
 
 
 \begin{figure}
 \centering
 \resizebox{.6\textwidth}{!}{
-\includegraphics{figs41/-plot_basic}
+<<fig.fig.width = 5, fig.fig.height = 5, echo = FALSE>>=
+ggplot(dat[sample(1:nrow(dat), 1e3),], aes(x = year_of_birth, y = education)) +
+  geom_jitter(width = 0.2, height = 0.2, alpha = 0.2) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) + 
+  scale_x_continuous(breaks = seq(30, 40, 2)) +
+  labs(x = 'Year of birth', y = 'Years of completed education')
+@
 }
 \end{figure}
+
 
 
 \end{frame}
