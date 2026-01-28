@@ -1,7 +1,7 @@
 #' ---
-#' title: "Assignment 5, Social Science Inquiry II (SOSC13200-W24-6)"
+#' title: "Assignment 6, Social Science Inquiry II (SOSC13200-W26-3)"
 #' author: "<your name here>"
-#' date: "Monday 1/29/24 at 5pm"
+#' date: "Friday 2/13/26 at 11:59pm"
 #' ---
 #' Packages
 library(ggplot2)
