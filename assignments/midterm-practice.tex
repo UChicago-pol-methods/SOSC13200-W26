@@ -1,0 +1,279 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{center}
+\textbf{SOSC 13200 (W26): Social Science Inquiry II --- Midterm Practice Sheet}
+\end{center}
+
+\noindent\textbf{Time:} 80 minutes \\
+\textbf{Notes:} Closed notes. No R / no computers. \\
+\textbf{Allowed:} Pencil/pen; non-programmable calculator. \\
+\textbf{Instructions:} Answer all questions. Show your work for calculations; partial credit is available. If you use notation, define it.
+
+\vspace{0.5em}
+\noindent\textbf{Provided formulas (you may use these)}
+\begin{itemize}
+  \item Independence: $\Pr[A \cap B]=\Pr[A]\Pr[B]$
+  \item Conditional probability: $\Pr[A\mid B]=\dfrac{\Pr[A\cap B]}{\Pr[B]}$ (if $\Pr[B]>0$)
+  \item Bayes' Rule: $\Pr[A\mid B]=\dfrac{\Pr[B\mid A]\Pr[A]}{\Pr[B]}$
+  \item Law of total probability (binary $A$): $\Pr[B]=\Pr[B\mid A]\Pr[A]+\Pr[B\mid A^c]\Pr[A^c]$
+  \item Wald estimator (binary instrument $Z$):
+  \[
+  \hat\beta_{\text{Wald}}=\frac{\bar Y_{Z=1}-\bar Y_{Z=0}}{\bar X_{Z=1}-\bar X_{Z=0}}
+  \]
+\end{itemize}
+
+\vspace{0.5em}
+\noindent\textbf{Practice Problem 1: Inference, measurement, and research design}
+\begin{enumerate}[label=\arabic*.]
+  \item \cite{holland1986statistics}: Define descriptive or associational statistics and causal inference. Give one example of each.
+  \item \cite{king1994designing} Overview the elements of KKV's definition of scientific research. Explain each element in 1--2 sentences. 
+  \item \cite{adcockcollier2001measurement} Provide one example of a concept that is hard to measure and describe a reasonable operationalization.
+  \item \cite{angrist1991does}, \cite{cardkrueger1994minimum}: Identify the unit of analysis, study population, treatment, and outcome in one of these papers. Explain why the chosen treatment is plausibly exogenous, i.e., why we can infer a causal relationship between the treatment and outcome.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Practice Problem 2: Causal assumptions} \cite{holland1986statistics}
+
+\noindent The City of Chicago wants to estimate the \emph{short-term causal effect} of installing
+brighter LED streetlights on nighttime pedestrian activity.
+
+\noindent Define the outcome as $Y_i = 1$ if resident $i$ walked outside (for any reason) between
+9pm and 10pm on the survey day, and $0$ otherwise. Assume everyone responds to the survey
+and there are no measurement issues.
+
+\vspace{0.5em}
+\noindent For each proposed study design below, identify \textbf{one Holland assumption that is most
+likely to be violated} (or is most questionable), and briefly explain why (1--2 sentences).
+Choose from:
+
+\begin{itemize}
+  \item \textbf{Temporal stability}
+  \item \textbf{Causal transience} 
+  \item \textbf{Unit homogeneity}
+  \item \textbf{Constant causal effect}
+  \item \textbf{Independence}
+\end{itemize}
+
+\noindent \textbf{Answer format (required):} \emph{Assumption:} \_\_\_\_; \emph{Why:} \_\_\_\_.
+
+\vspace{0.5em}
+  \begin{enumerate}[label=\arabic*.]
+    \item The city offers a website where residents can \textbf{request} brighter streetlights on their block.
+    Blocks are upgraded as requests come in. Several weeks after opening the website, the city surveys residents on upgraded blocks and
+    non-upgraded blocks and compares $Y$ across these groups.
+
+    \item The city runs a pilot by upgrading \textbf{all streetlights only in the Loop}. They survey all residents in the Loop and in other neighborhoods and compare $Y$ across these areas.
+
+    \item The city runs a pilot by \textbf{randomly upgrading streetlights block by block only in the Loop}. They survey all residents in the Loop, and compare $Y$ between blocks where lights were upgraded and where they were not. 
+    They plan to use that estimate as \textbf{the predicted effect for all neighborhoods citywide}
+    if the program is expanded.
+
+    \item The city turns on the brighter LED streetlights on \textbf{all residential blocks} on the same day. They survey all residents the day before and the day after and take the difference in $Y$ as the policy effect.
+
+    \item The city turns on brighter LED streetlights on \textbf{all residential blocks} for \textbf{one week}, then returns to
+    normal lighting. They survey all residents on the first Monday of each week, and compare $Y$ across the two Mondays as the policy effect.
+
+\end{enumerate}
+
+\noindent\textbf{Practice Problem 3A: Sample spaces, random variables, conditional relationships}
+\noindent \textbf{Setup:} A 3-person jury votes to \textbf{convict (C)} or \textbf{acquit (A)}.
+Juror 1 votes to convict with probability $0.5$.
+Juror 2 votes to convict with probability $0.5$, independently of Juror 1.
+
+Juror 3 is a \emph{conformist}:
+\begin{itemize}
+  \item If Jurors 1 and 2 agree (both C or both A), then Juror 3 votes \emph{with them} with probability $0.9$.
+  \item If Jurors 1 and 2 disagree, then Juror 3 votes C with probability $0.5$.
+\end{itemize}
+
+Let $\Omega$ be the sample space written as length-3 strings (e.g., ``CAC'') in order (Juror 1, Juror 2, Juror 3).
+Let $X$ be the number of convictions (the number of C's).
+
+Define $Y$ as:
+\begin{itemize}
+  \item $Y=1$ if the jury \textbf{convicts by majority rule} (at least two C votes),
+  \item $Y=0$ otherwise.
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Write out the full sample space $\Omega$.
+  \item Compute the probability of each outcome in $\Omega$ and then give the pmf of $X$:
+  list $\Pr[X=0]$, $\Pr[X=1]$, $\Pr[X=2]$, $\Pr[X=3]$.
+  \item Compute $\Pr[Y=1]$ and $\Pr[Y=0]$.
+  \item Are the events $\{X=2\}$ and $\{Y=1\}$ independent? Justify using $\Pr(A\cap B)$ vs $\Pr(A)\Pr(B)$.
+\end{enumerate}
+
+\vspace{1em}
+
+\noindent\textbf{Practice Problem 3B: Sample spaces, random variables, conditional relationships}
+
+\noindent \textbf{Setup:} Three students (A, B, C) may submit an assignment on time (T) or late (L).
+\begin{itemize}
+  \item Student A is on time with probability $0.7$.
+  \item Student B is on time with probability $0.6$.
+  \item A and B are independent.
+  \item Student C’s behavior depends on A and B:
+  \begin{itemize}
+    \item If both A and B are on time, then $\Pr(C=\text{T})=0.9$.
+    \item If exactly one of A or B is on time, then $\Pr(C=\text{T})=0.5$.
+    \item If both A and B are late, then $\Pr(C=\text{T})=0.1$.
+  \end{itemize}
+\end{itemize}
+
+Let $\Omega$ be the sample space written as length-3 strings in order (A, B, C), e.g., ``TLT''.
+Let $X$ be the number of on-time submissions (the number of T's).
+
+Define $Y$ as:
+\begin{itemize}
+  \item $Y=1$ if \textbf{at least two} students are on time,
+  \item $Y=0$ otherwise.
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Write out the full sample space $\Omega$.
+  \item Give the pmf of $X$: list $\Pr[X=0]$, $\Pr[X=1]$, $\Pr[X=2]$, $\Pr[X=3]$.
+  \item Compute $\Pr[Y=1]$ and $\Pr[Y=0]$.
+  \item Are the events $\{\text{A is on time}\}$ and $\{Y=1\}$ independent? Briefly justify.
+\end{enumerate}
+
+% ------------------------------------------------------------
+
+\vspace{1.5em}
+\noindent\textbf{Practice Problem 4A: Conditional probability, Bayes' rule, and base rates}
+
+\noindent \textbf{Setup (classification model):} A campaign model flags a person as a likely Democrat. 
+
+\noindent Let $A$ be the event the person truly is a Democrat, and $F$ be the event the model flags them.
+
+\noindent You are told:
+\begin{itemize}
+  \item $\Pr[A]=0.40$
+  \item True positive rate: $\Pr[F\mid A]=0.80$
+  \item False positive rate: $\Pr[F\mid A^c]=0.30$
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Compute $\Pr[F]$. Show your work.
+  \item Compute $\Pr[A\mid F]$. (If flagged, what is the probability the person truly has $A$?)
+  \item Compute $\Pr[A\mid F^c]$. Show your work.
+  \item In 2--3 sentences: explain why $\Pr[A\mid F]$ is generally not equal to $\Pr[F\mid A]$.
+  Name the fallacy this confusion relates to.
+\end{enumerate}
+
+\vspace{1em}
+\noindent\textbf{Practice Problem B: Conditional probability, Bayes' rule, and base rates}
+
+\noindent \textbf{Setup:} An automated system flags assignments as ``suspicious''.
+Let $P$ be the event an assignment is truly plagiarized, and $F$ be the event it is flagged.
+
+You are told:
+\begin{itemize}
+  \item $\Pr[P]=0.07$
+  \item $\Pr[F\mid P]=0.85$
+  \item $\Pr[F\mid P^c]=0.12$
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Compute $\Pr[F]$.
+  \item Compute $\Pr[P\mid F]$.
+  \item Compute $\Pr[P\mid F^c]$.
+  \item In 2--3 sentences: what is the role of the base rate $\Pr[P]$ in (b)?
+\end{enumerate}
+
+\vspace{1em}
+
+\noindent\textbf{Practice Problem 4C: Bayes with a rare outcome}
+
+\noindent \textbf{Setup:} Let $V$ be the event a person will vote, and $F$ be the event the model flags them.
+
+\noindent You are told:
+\begin{itemize}
+  \item $\Pr[V]=0.10$
+  \item $\Pr[F\mid V]=0.90$
+  \item $\Pr[F\mid V^c]=0.20$
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Compute $\Pr[F]$. Show your work.
+  \item Compute $\Pr[V\mid F]$.
+  \item Compute $\Pr[V\mid F^c]$.
+  \item In 2--3 sentences: what role does the base rate $\Pr[V]$ play in your answer to (b)?
+\end{enumerate}
+
+\vspace{1em}
+
+\noindent\textbf{Practice Problem 4C: Same task, using counts (confusion matrix)}
+
+\noindent \textbf{Setup:} In a sample of 10{,}000 people, 6{,}000 truly vote and 4{,}000 do not.
+The model flags 4{,}500 of the voters, and flags 800 of the non-voters.
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Compute $\Pr[F]$.
+  \item Compute $\Pr[V\mid F]$.
+  \item Compute $\Pr[V\mid F^c]$.
+  \item In 2--3 sentences: explain why it can be misleading to report only the true positive rate.
+\end{enumerate}
+
+% ------------------------------------------------------------
+
+\vspace{1.5em}
+\noindent\textbf{Practice Problem 5A: Experiments, counterfactuals, and spillovers, with reference to \cite{miguel2004worms}}
+
+\noindent \textbf{Setup (public health):} A ministry wants to estimate the effect of distributing
+insecticide-treated bed nets on malaria incidence among children. The outcome is whether a child tests
+positive for malaria after 3 months. Bed nets reduce mosquito bites, and may also reduce the local mosquito
+population (potentially affecting other households).
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item In potential-outcomes language, what does it mean to say there are treatment spillovers/externalities?
+  \item Give two reasons why bed-net distribution might be randomized at the \emph{village level} rather than the household level.
+  \item Assume positive spillovers so outcomes depend on neighbors' treatment. Explain why the no-interference assumption fails,
+  and argue whether the simple treated-vs-control difference is attenuated.
+  \item Give one design or analysis strategy that could help address spillovers (one sentence).
+\end{enumerate}
+
+\vspace{1em}
+
+\noindent\textbf{Practice Problem 5B: Peer effects in education}
+
+\noindent \textbf{Setup (education):} A district introduces a new reading curriculum. Some classrooms receive the curriculum and some do not.
+Students in treated classrooms might share materials or strategies with friends in control classrooms in the same school.
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Give two reasons the district might randomize at the \emph{school} level rather than the classroom or student level.
+  \item If there are positive spillovers from treated to control classrooms within the same school, what happens to a simple treated-vs-control difference?
+  Explain briefly.
+\end{enumerate}
+
+% ------------------------------------------------------------
+
+\vspace{1.5em}
+\noindent\textbf{Practice Problem 6: Encouragement design, Wald estimator}
+
+\noindent \textbf{Setup:} A clinic tests an encouragement intervention.
+Let $Z=1$ if a patient is randomly assigned to receive a reminder text encouraging a flu shot, and $Z=0$ otherwise.
+Let $X$ be an indicator for actually getting the flu shot, and let $Y$ be an indicator for getting the flu that season.
+
+You are given group means:
+\begin{itemize}
+  \item $\bar Y_{Z=1}=0.08$, \quad $\bar Y_{Z=0}=0.10$
+  \item $\bar X_{Z=1}=0.60$, \quad $\bar X_{Z=0}=0.45$
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Compute the Wald estimate $\hat\beta_{\text{Wald}}$ for the effect of $X$ on $Y$.
+  \item Identify the reduced form and the first stage.
+\end{enumerate}
+
+\newpage
+\bibliographystyle{apalike}
+\nocite{butler2011politicians,angrist1991does,miguel2004worms,cardkrueger1994minimum}
+\bibliography{../assets/bib}
+
+\end{document}
