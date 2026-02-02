@@ -129,3 +129,7 @@ set.seed(60637)
 #' 
 
 # Your code here.
+
+#' # 4. AI statement
+#' Include an AI statement with reference to the course AI policy:
+#' https://github.com/UChicago-pol-methods/SOSC13200-W26/blob/main/ai-policy.md
