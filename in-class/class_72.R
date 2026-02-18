@@ -44,8 +44,7 @@ dat1 <- dat[which(dat$d==1),]
 # For ..special variables.. see ggplot_build(...)$data[[1]]
 
 g1 <- ggplot(dat0, aes(x = wage, fill = State)) +
-  geom_histogram(aes(y=c(after_stat(count)[..group..==1]/sum(after_stat(count)[..group..==1]),
-                         after_stat(count)[..group..==2]/sum(after_stat(count)[..group..==2]))),
+  geom_histogram(aes(y = after_stat(count / tapply(count, group, sum)[group])),
                  position='dodge', bins = 15, na.rm = TRUE) + 
   scale_y_continuous(labels = scales::label_percent(accuracy = 1), 
                      breaks = seq(0, 1, 0.05)) + 
@@ -62,8 +61,7 @@ g1
 
 
 g2 <- ggplot(dat1, aes(x = wage, fill = State)) +
-  geom_histogram(aes(y=c(after_stat(count)[..group..==1]/sum(after_stat(count)[..group..==1]),
-                         after_stat(count)[..group..==2]/sum(after_stat(count)[..group..==2]))),
+  geom_histogram(aes(y = after_stat(count / tapply(count, group, sum)[group])),
                  position='dodge', bins = 15, na.rm = TRUE) + 
   scale_y_continuous(labels = scales::label_percent(accuracy = 1), 
                      breaks = seq(0, 1, 0.05)) + 
@@ -80,10 +78,7 @@ g2
 
 g3 <- ggplot(dat, aes(x = wage, fill = State)) +
   facet_wrap(~Wave, nrow = 2) + 
-  geom_histogram(aes(y=c(after_stat(count)[..group..==1 & ..PANEL.. ==1]/sum(after_stat(count)[..group..==1& ..PANEL.. ==1]),
-                         after_stat(count)[..group..==2& ..PANEL.. ==1]/sum(after_stat(count)[..group..==2& PANEL ==1]),
-                         after_stat(count)[..group..==1 & ..PANEL.. ==2]/sum(after_stat(count)[..group..==1& ..PANEL.. ==2]),
-                         after_stat(count)[..group..==2& ..PANEL.. ==2]/sum(after_stat(count)[..group..==2& PANEL ==2]))),
+  geom_histogram(aes(y = after_stat(count / tapply(count, group, sum)[group])),
                  position='dodge', bins = 15, na.rm = TRUE) + 
   scale_y_continuous(labels = scales::label_percent(accuracy = 1), 
                      breaks = seq(0, 1, 0.05)) + 
