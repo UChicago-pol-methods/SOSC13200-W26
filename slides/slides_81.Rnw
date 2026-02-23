@@ -24,6 +24,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 
 %-------------------------------------------------------------------------------%
@@ -50,6 +51,15 @@ library(estimatr)
 library(modelsummary)
 library(gridExtra)
 set.seed(60637)
+
+# Make modelsummary output LaTeX via kableExtra (avoids tabularray/tinytable)
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  options(
+    modelsummary_factory_default = "kableExtra",
+    modelsummary_factory_latex = "kableExtra",
+    modelsummary_factory_html = "kableExtra"
+  )
+}
 @
 
 \end{frame}
