@@ -1,21 +1,25 @@
-\begin{table}
-\centering
-\begin{tabular}[t]{lccccc}
-\toprule
-  & (1) & (2) & (3) & (4) & (5)\\
-\midrule
-New Jersey Dummy & \num{2.326} & \num{2.304} &  &  & \\
- & (\num{1.458}) & (\num{1.454}) &  &  & \\
-Initial Wage Gap &  &  & \num{15.653}* & \num{14.916}* & \num{11.979}+\\
- &  &  & (\num{6.178}) & (\num{6.526}) & (\num{7.035})\\
-\midrule
-Num.Obs. & \num{357} & \num{357} & \num{357} & \num{357} & \num{357}\\
-AIC & \num{2569.1} & \num{2572.6} & \num{2566.4} & \num{2570.5} & \num{2573.9}\\
-BIC & \num{2580.8} & \num{2599.7} & \num{2578.0} & \num{2597.7} & \num{2616.5}\\
-RMSE & \num{8.77} & \num{8.71} & \num{8.73} & \num{8.69} & \num{8.63}\\
-Controls for chain and ownership & no & yes & no & yes & yes\\
-Controls for region & no & no & no & no & yes\\
-\bottomrule
-\multicolumn{6}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
-\end{tabular}
-\end{table}
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p < 0.1, * p < 0.05, ** p < 0.01, *** p < 0.001},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-6}{solid, black, 0.05em},
+hline{6}={1-6}{solid, black, 0.05em},
+hline{1}={1-6}{solid, black, 0.08em},
+hline{12}={1-6}{solid, black, 0.08em},
+column{2-6}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& (1) & (2) & (3) & (4) & (5) \\
+New Jersey Dummy & \num{2.277} & \num{2.282} &  &  &  \\
+& (\num{1.456}) & (\num{1.457}) &  &  &  \\
+Initial Wage Gap &  &  & \num{17.052}** & \num{16.363}* & \num{13.879}* \\
+&  &  & (\num{6.153}) & (\num{6.537}) & (\num{7.051}) \\
+Num.Obs. & \num{351} & \num{351} & \num{351} & \num{351} & \num{351} \\
+AIC & \num{2519.9} & \num{2524.4} & \num{2515.8} & \num{2521.1} & \num{2524.1} \\
+BIC & \num{2531.5} & \num{2551.4} & \num{2527.4} & \num{2548.1} & \num{2566.6} \\
+RMSE & \num{8.69} & \num{8.65} & \num{8.64} & \num{8.61} & \num{8.55} \\
+Controls for chain and ownership & no & yes & no & yes & yes \\
+Controls for region & no & no & no & no & yes \\
+\end{talltblr}

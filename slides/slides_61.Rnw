@@ -594,41 +594,6 @@ ggplot(toy_dat, aes(x = X,
 
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]
-What values for $\hat \beta_0$ and $\hat \beta_1$ minimize the residual sum of squares?
-
-\begin{figure}
-\centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
-toy_dat$fitted <- fitted(lm(Y~X, data = toy_dat))
-
-ggplot(toy_dat, aes(x = X,
-                    y = Y)) +
-  geom_point() + # points with color
-  theme_bw() + # plot style
-  geom_smooth(method = 'lm', se = FALSE) + # lines
-  geom_segment(aes(x = X, y = Y,
-                   xend = X, yend = fitted), 
-               color = 'grey')
-@
-}
-\end{figure}
-
-\end{frame}
-
-
-%%%%%NOTE%%%%%
-\note{
-\scriptsize \singlespacing
-
-\begin{itemize}
-\item xxxx
-\end{itemize}
-\\~\
-}
-
-%-------------------------------------------------------------------------------%
-\begin{frame}[fragile]
 We can also think about $\hat \beta_0$ and $\hat \beta_1$ as the \textit{y-intercept}, i.e., where the line crosses the y-axis, and the \textit{slope}, respectively. 
 
 <<load>>=

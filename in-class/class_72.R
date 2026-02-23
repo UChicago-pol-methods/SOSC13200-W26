@@ -99,6 +99,7 @@ g3
 #' ## Table 3
 
 lm0 <- lm_robust(fte ~ d*nj, data = dat)
+lm_robust(fte ~ d + nj + d_nj, data = dat)
 
 ## Row 1
 # PA before
