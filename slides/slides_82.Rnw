@@ -1,0 +1,710 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+
+\usepackage{../assets/pres-template_MOW}
+\usepackage{verbatim}
+
+\setkeys{Gin}{keepaspectratio}
+
+%--------------------------------------------------------------------------
+% Specific to this document ---------------------------------------
+\usepackage{booktabs}
+\usepackage{siunitx}
+\newcolumntype{d}{S[input-symbols = ()]}
+
+%--------------------------------------------------------------------------
+% \setbeamercovered{transparent}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\tabcolsep}{1.3pt}
+\title{Social Science Inquiry II}
+\subtitle{Week 8: Statistical power, effect sizes, sample size}
+\date{Winter 2026}
+\author{Molly Offer-Westort}
+\institute{Department of Political Science, \\University of Chicago}
+
+
+\begin{document}
+
+%-------------------------------------------------------------------------------%
+<<setup, include=FALSE, echo = FALSE>>=
+knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs82/",
+                      message = FALSE, warning = FALSE)
+if (!dir.exists("figs82")) dir.create("figs82")
+@
+%-------------------------------------------------------------------------------%
+\frame{\titlepage
+\thispagestyle{empty}
+}
+
+%-------------------------------------------------------------------------------%
+<<packages, echo = FALSE>>=
+library(ggplot2)
+options(scipen = 1, digits = 3)
+set.seed(60637)
+@
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Today's questions}
+\begin{itemize}
+\item What is power?
+\item What drives it?
+\item How do we justify sample size?
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Learning goals}
+\begin{itemize}
+\item Define power and connect it to false negatives.
+\item Identify the main ingredients that determine power.
+\item Explain what makes a power analysis believable (or not).
+\item Write a defensible sample-size justification.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Power: signal vs.\ noise}
+\cite{coppock2022power}
+
+\begin{itemize}
+\item \textbf{Power} is the ability to distinguish signal from noise. \pause
+Formally: the probability of rejecting the null hypothesis when the alternative is true (i.e., detecting a real effect).\pause 
+\item Signal: the treatment effect (or relationship) we care about.
+\item Noise: how much outcomes vary for other reasons.
+\item High noise + small effects $\Rightarrow$ hard to detect.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Errors you care about}
+\small
+\begin{tabular}{lcc}
+\toprule
+& \textbf{Reject $H_0$} & \textbf{Fail to reject $H_0$} \\
+\midrule
+$H_0$ is true & Type I error ($\alpha$) & Correct \\
+$H_A$ is true & Correct (power $= 1-\beta$) & Type II error ($\beta$) \\
+\bottomrule
+\end{tabular}
+\normalsize
+
+\vspace{0.6cm}
+\begin{itemize}
+\item Low power means a high chance of missing real effects.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Normal critical values and $z$-quantiles}
+\begin{itemize}
+\item Under a normal approximation, test cutoffs are measured in ``standard error units.''
+\item Notation: $z_p$ is the $p$th quantile of $N(0,1)$ (so $\Pr(Z\le z_p)=p$ for $Z\sim N(0,1)$).
+\item Common values: $z_{0.975}\approx 1.96$ (two-sided $\alpha=0.05$) and $z_{0.80}\approx 0.84$ (power $=0.80$).
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{Visualizing $\alpha$, $\beta$, and power}
+\scriptsize
+
+\begin{figure}
+\centering
+\resizebox{\textwidth}{0.72\textheight}{
+<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 4>>=
+alpha <- 0.05
+n <- 50
+sd_y <- 1
+delta <- 0.30
+
+se <- sd_y * sqrt(2 / n)
+crit <- qnorm(1 - alpha / 2) * se
+
+x <- seq(-1, 1, length.out = 2000)
+df <- data.frame(
+  x = x,
+  h0 = dnorm(x, mean = 0, sd = se),
+  h1 = dnorm(x, mean = delta, sd = se)
+)
+
+df_left <- df[df$x <= -crit, ]
+df_right <- df[df$x >= crit, ]
+df_mid <- df[df$x > -crit & df$x < crit, ]
+
+beta <- pnorm(crit, mean = delta, sd = se) - pnorm(-crit, mean = delta, sd = se)
+power_val <- 1 - beta
+
+ggplot(df, aes(x = x)) +
+  geom_area(data = df_left, aes(y = h0), fill = "grey70", alpha = 0.7) +
+  geom_area(data = df_right, aes(y = h0), fill = "grey70", alpha = 0.7) +
+  geom_area(data = df_mid, aes(y = h1), fill = "tomato", alpha = 0.35) +
+  geom_line(aes(y = h0), color = "black", linewidth = 1) +
+  geom_line(aes(y = h1), color = "steelblue", linewidth = 1, linetype = "dashed") +
+  geom_vline(xintercept = c(-crit, crit), linetype = "dotted") +
+  theme_bw() +
+  labs(
+    x = "Estimated effect",
+    y = "Density",
+    title = "Sampling distributions under $H_0$ and $H_A$",
+    subtitle = paste0(
+      "Two-group design; n per group = ", n,
+      ", sd = ", sd_y,
+      ", delta = ", delta,
+      ", alpha = ", alpha,
+      ", power \u2248 ", sprintf("%.2f", power_val)
+    )
+  )
+@
+}
+\end{figure}
+
+\normalsize
+\vspace{0.1cm}
+\begin{itemize}
+\item Gray tails under $H_0$: Type I error ($\alpha$).
+\item Red region under $H_A$: Type II error ($\beta$). Power $=1-\beta$.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Why we need power analysis}
+
+\begin{itemize}
+\item If an effect exists, will our study design be able to detect it?
+\item Underpowered studies are costly and uninformative.
+\item Power analysis forces us to make our assumptions explicit:
+\begin{itemize}
+\item How big is the effect we care about?
+\item How noisy is the outcome?
+\item What sample size and design can we actually run?
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Quick check}
+\Large
+If power = 0.30, what does that mean?
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{The three ingredients of power}
+
+\begin{itemize}
+\item \textbf{Effect size}: how big is the signal?
+\item \textbf{Noise}: how variable is the outcome?
+\item \textbf{Sample size}: how much information do we collect?
+\end{itemize}
+
+\vspace{0.4cm}
+\begin{itemize}
+\item Design choices also matter (assignment ratio, clustering, blocking) and estimation choices (estimator, covariate adjustment).
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Effect size isn't ``what you hope''}
+
+\begin{itemize}
+\item The effect size used in power analysis should be tied to a claim.
+\item Often, the key question is: \textbf{what is the smallest effect size of interest?}
+\item If we don't define what effects matter, ``powered'' doesn't mean much.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Noise comes from measurement and design}
+
+\begin{itemize}
+\item Outcome variability (heterogeneity in the population).
+\item Measurement error and survey noise.
+\item Timing (when outcomes are measured).
+\item Noncompliance and attrition.
+\item Dependence (clusters, repeated observations).
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{N is not the only lever}
+
+\begin{itemize}
+\item Increasing $N$ increases power, but:
+\item You can sometimes \textit{increase precision} without increasing $N$:
+\begin{itemize}
+\item better measurement (reduce noise)
+\item better design (blocking/stratification)
+\item better analysis plan (pre-specified covariates)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{Example: pre-test covariates can boost power}
+\cite{offer2026frame}
+
+\begin{itemize}
+\item If a pre-test strongly predicts the post-test, controlling for it reduces residual noise.
+\item Less noise $\Rightarrow$ smaller $n$ for the same effect size of interest and target power.
+\end{itemize}
+
+\begin{figure}
+\centering
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 3.6>>=
+alpha <- 0.05
+power_target <- 0.80
+delta <- 0.30
+r <- 0.60
+N <- 800
+
+pre <- rnorm(N)
+post <- r * pre + sqrt(1 - r^2) * rnorm(N)
+
+sd_post <- sd(post)
+resid_sd <- sd(resid(lm(post ~ pre)))
+
+n_unadj <- ceiling(power.t.test(
+  delta = delta, sd = sd_post, sig.level = alpha, power = power_target,
+  type = "two.sample", alternative = "two.sided"
+)$n)
+
+n_adj <- ceiling(power.t.test(
+  delta = delta, sd = resid_sd, sig.level = alpha, power = power_target,
+  type = "two.sample", alternative = "two.sided"
+)$n)
+
+op <- par(mfrow = c(1, 2), mar = c(4, 4, 2.5, 1))
+
+plot(pre, post,
+     pch = 19, cex = 0.6,
+     col = rgb(0, 0, 0, 0.15),
+     xlab = "Pre-test", ylab = "Post-test")
+abline(lm(post ~ pre), col = "steelblue", lwd = 2)
+title(main = paste0("Pre predicts post (corr \u2248 ", sprintf("%.2f", cor(pre, post)), ")"))
+
+bp <- barplot(
+  height = c(n_unadj, n_adj),
+  names.arg = c("No pre\ncontrol", "Control\nfor pre"),
+  col = c("grey70", "steelblue"),
+  ylab = "n per group for 80% power",
+  ylim = c(0, max(n_unadj, n_adj) * 1.25)
+)
+text(x = bp, y = c(n_unadj, n_adj), labels = c(n_unadj, n_adj), pos = 3, cex = 0.8)
+title(main = paste0("MDE = ", delta, " SD"))
+
+par(op)
+@
+}
+\end{figure}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Applications and tradeoffs}
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item For each case, what is the likely bottleneck (effect size, noise, or $N$)?
+\item What is \textbf{one} design change to increase power?
+\end{enumerate}
+
+\vspace{0.4cm}
+\begin{itemize}
+\item Case A: outcome is ``monthly income''; small expected effect; $N$ is limited.
+\item Case B: outcome is a low-variance administrative count; moderate effect; $N$ is moderate.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Assumptions}
+
+\begin{itemize}
+\item A power calculation maps assumptions $\Rightarrow$ probability of detection.
+\item It's a \textit{design tool} to tell us what to do \textit{under certain assumptions}---
+\item If the assumptions are wrong, the power calculation can be very misleading.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{Minimal detectable effect (MDE)}
+
+\begin{itemize}
+\item Fix $\alpha$ and a target power (e.g., $\alpha = 0.05$, power $=0.80$).
+\item Given $N$ and noise, compute the smallest effect you can reliably detect.
+\item Alternative reframing: \textbf{what can this study rule out?}
+\end{itemize}
+
+\vspace{0.2cm}
+\scriptsize
+<<>>=
+alpha <- 0.05
+power_target <- 0.80
+n_per_group <- 50
+sd_y <- 1
+mde <- power.t.test(n = n_per_group, power = power_target, sd = sd_y,
+                    sig.level = alpha, type = "two.sample",
+                    alternative = "two.sided")$delta
+cat(sprintf(
+  "alpha=%.2f, power=%.2f, n per group=%d (N=%d), sd=%.1f  =>  MDE = %.2f SD\n",
+  alpha, power_target, n_per_group, 2 * n_per_group, sd_y, mde
+))
+@
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{MDE decreases as $n$ increases}
+\scriptsize
+
+\begin{figure}
+\centering
+\resizebox{\textwidth}{0.72\textheight}{
+<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 4>>=
+alpha <- 0.05
+power_target <- 0.80
+sd_y <- 1
+sesoi <- 0.30
+
+n_grid <- seq(20, 300, by = 10)
+mde_grid <- sapply(n_grid, function(n) {
+  power.t.test(
+    n = n, power = power_target, sd = sd_y, sig.level = alpha,
+    type = "two.sample", alternative = "two.sided"
+  )$delta
+})
+
+n_for_sesoi <- ceiling(power.t.test(
+  delta = sesoi, power = power_target, sd = sd_y, sig.level = alpha,
+  type = "two.sample", alternative = "two.sided"
+)$n)
+
+df <- data.frame(n = n_grid, mde = mde_grid)
+
+ggplot(df, aes(x = n, y = mde)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  geom_hline(yintercept = sesoi, linetype = "dotted") +
+  geom_vline(xintercept = n_for_sesoi, linetype = "dashed", color = "grey30") +
+  annotate("text", x = n_for_sesoi + 10, y = sesoi + 0.05,
+           label = paste0("MDE = ", sesoi, "\nNeeds n \u2248 ", n_for_sesoi, " per group"),
+           hjust = 0, size = 3) +
+  theme_bw() +
+  labs(
+    x = "Sample size per group (n)",
+    y = "MDE (delta, in SD units)",
+    title = "With fixed noise + alpha, bigger samples detect smaller effects",
+    subtitle = paste0("alpha = 0.05; target power = 0.80; sd = ", sd_y)
+  )
+@
+}
+\end{figure}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{When to believe your power analysis}
+
+\begin{itemize}
+\item \textbf{Effect size inputs} are justified.
+\item \textbf{Noise inputs} are justified (pilot data, benchmarks, or conservative assumptions).
+\item The calculation matches the \textbf{design and analysis} you will actually run.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Common failure modes}
+
+\begin{itemize}
+\item Using an optimistic effect size from prior literature (especially small studies).
+\item Ignoring multiple testing or multiple outcomes.
+\item Ignoring clustering / dependence.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{Clustering: the ``effective $N$'' can be much smaller}
+\scriptsize
+
+\begin{itemize}
+\item If outcomes are correlated within clusters (schools, villages, classrooms), you have less information than $N$ suggests.
+\item Approximation: design effect $\text{DEFF} = 1 + (m-1)\rho$ where $m$ is cluster size and $\rho$ is the ICC.
+\item Effective sample size (roughly) $N_{\text{eff}} \approx N / \text{DEFF}$.
+\end{itemize}
+
+\begin{figure}
+\centering
+\resizebox{\textwidth}{0.55\textheight}{
+<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 3.2>>=
+m <- 20
+icc_grid <- seq(0, 0.20, by = 0.005)
+deff <- 1 + (m - 1) * icc_grid
+neff_ratio <- 1 / deff
+
+df <- data.frame(icc = icc_grid, neff_ratio = neff_ratio)
+
+ggplot(df, aes(x = icc, y = neff_ratio)) +
+  geom_line(linewidth = 1, color = "darkorange") +
+  geom_hline(yintercept = 1, linetype = "dotted") +
+  coord_cartesian(ylim = c(0, 1.02)) +
+  theme_bw() +
+  scale_x_continuous(labels = scales::label_percent(accuracy = 1)) +
+  scale_y_continuous(labels = scales::label_percent(accuracy = 1)) +
+  labs(
+    x = "Intra-class correlation (ICC, \u03c1)",
+    y = "Effective N as % of nominal N",
+    title = "Even small ICCs can substantially reduce effective sample size",
+    subtitle = paste0("Example cluster size m = ", m, "; N_eff / N = 1 / (1 + (m-1)\u03c1)")
+  )
+@
+}
+\end{figure}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{(Optional) Multiple tests and power}
+
+\begin{itemize}
+\item If you adjust $\alpha$ for multiple tests, power goes down (unless $N$ goes up).
+\item Simple example: Bonferroni correction lowers the per-test $\alpha$.
+\item This is one reason preregistration and a clear analysis plan matter.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Why simulate power?}
+
+\begin{itemize}
+\item Closed-form formulas rely on assumptions that can be wrong.
+\item Simulation lets you match:
+\begin{itemize}
+\item your design (assignment ratios, clustering, attrition)
+\item your estimator and analysis plan
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Simulation recipe}
+
+\begin{enumerate}
+\item Assume an effect size, noise, and design.
+\item Generate data from those assumptions.
+\item Run the analysis you plan to run.
+\item Repeat many times; power $\approx$ fraction of rejections.
+\end{enumerate}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{What simulation buys you}
+
+\begin{itemize}
+\item Handles covariates and complicated estimators.
+\item Handles noncompliance and attrition (if modeled).
+\item Handles nonlinear outcomes (binary, counts, etc.).
+\item Helps you sanity-check your design choices.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{Power curve in a two-group design}
+\scriptsize
+
+\begin{figure}
+\centering
+\resizebox{\textwidth}{0.75\textheight}{
+<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 4>>=
+alpha <- 0.05
+sd_y <- 1
+delta <- 0.30  # standardized effect (since sd_y = 1)
+sims <- 500
+
+sim_power_t <- function(n, delta, sd_y = 1, sims = 500, alpha = 0.05) {
+  df <- 2 * n - 2
+  crit <- qt(1 - alpha / 2, df)
+  y0 <- matrix(rnorm(n * sims, mean = 0, sd = sd_y), nrow = n)
+  y1 <- matrix(rnorm(n * sims, mean = delta, sd = sd_y), nrow = n)
+  m0 <- colMeans(y0)
+  m1 <- colMeans(y1)
+  v0 <- apply(y0, 2, var)
+  v1 <- apply(y1, 2, var)
+  sp2 <- ((n - 1) * v0 + (n - 1) * v1) / df
+  se <- sqrt(sp2) * sqrt(2 / n)
+  tstat <- (m1 - m0) / se
+  mean(abs(tstat) > crit)
+}
+
+n_grid <- seq(10, 200, by = 10)
+power_formula <- sapply(n_grid, function(n) {
+  power.t.test(n = n, delta = delta, sd = sd_y, sig.level = alpha,
+               type = "two.sample", alternative = "two.sided")$power
+})
+power_sim <- sapply(n_grid, function(n) {
+  sim_power_t(n = n, delta = delta, sd_y = sd_y, sims = sims, alpha = alpha)
+})
+
+df <- data.frame(n = n_grid, power_formula = power_formula, power_sim = power_sim)
+
+ggplot(df, aes(x = n)) +
+  geom_line(aes(y = power_formula, color = "Formula"), linewidth = 1) +
+  geom_line(aes(y = power_sim, color = "Simulation"), linewidth = 1, linetype = "dashed") +
+  geom_hline(yintercept = 0.80, linetype = "dotted") +
+  coord_cartesian(ylim = c(0, 1)) +
+  scale_color_manual(values = c(Formula = "steelblue", Simulation = "darkorange")) +
+  theme_bw() +
+  labs(x = "Sample size per group (n)", y = "Power", color = "",
+       title = "Power increases with n (holding effect size and noise fixed)",
+       subtitle = paste0("Two-sample t-test; alpha = 0.05; delta = ", delta, "; sd = ", sd_y, "; sims = ", sims))
+@
+}
+\end{figure}
+
+\normalsize
+\vspace{0.2cm}
+\begin{itemize}
+\item This is power \textit{under the assumptions used to generate the data}.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Sample size justification (Lakens)}
+\cite{lakens2022samplesize}
+
+\begin{itemize}
+\item ``Power analysis'' is \textit{one} way to justify sample size.
+\item Other legitimate justifications include:
+\begin{itemize}
+\item measuring (almost) the full population
+\item resource constraints (with transparency)
+\item desired accuracy / precision (CI width)
+\item heuristics (weaker)
+\item explicitly acknowledging no clear justification
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{What counts as an ``interesting'' effect?}
+
+\begin{itemize}
+\item Smallest effect size of interest / minimal detectable effect (MDE)
+\item Expected effect size (with careful justification)
+\item Confidence interval width (accuracy)
+\item Sensitivity power analysis over a range of effects
+\item Distribution of effects in the research area
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Sensitivity power vs.\ ``powering for the expected''}
+
+\begin{itemize}
+\item ``Powered for expected effect'' can be fragile if the expected effect is optimistic.
+\item Sensitivity power asks: across a range of effects, what can we detect?
+\end{itemize}
+
+\begin{figure}
+\centering
+\resizebox{\textwidth}{0.55\textheight}{
+<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 3.5>>=
+alpha <- 0.05
+n_per_group <- 50
+sd_y <- 1
+delta_grid <- seq(0, 1, by = 0.05)
+power_grid <- sapply(delta_grid, function(d) {
+  power.t.test(n = n_per_group, delta = d, sd = sd_y, sig.level = alpha,
+               type = "two.sample", alternative = "two.sided")$power
+})
+df <- data.frame(delta = delta_grid, power = power_grid)
+
+ggplot(df, aes(x = delta, y = power)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  geom_hline(yintercept = 0.80, linetype = "dotted") +
+  coord_cartesian(ylim = c(0, 1)) +
+  theme_bw() +
+  labs(x = "Effect size (delta, in SD units)", y = "Power",
+       title = "Sensitivity power curve (holding n and noise fixed)",
+       subtitle = paste0("n per group = ", n_per_group, "; alpha = 0.05"))
+@
+}
+\end{figure}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Guided example: design + assumptions}
+
+\begin{itemize}
+\item Research question: does a message/frame change support for a policy? \cite{offer2026frame}
+\item Outcome ($Y$): standardized support (mean 0, SD 1).
+\item Estimand: difference in means, $\E[Y\mid T=1]-\E[Y\mid T=0]$.
+\item MDE: $0.30$ SD (small but meaningful).
+\item Target: $\alpha = 0.05$, power $=0.80$, 50/50 assignment.
+\end{itemize}
+
+\vspace{0.3cm}
+\begin{itemize}
+\item Class questions: is this feasible? If not, what lever would you pull first?
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}[fragile]{Guided example: compute + justify}
+
+\scriptsize
+<<echo = FALSE>>=
+alpha <- 0.05
+power_target <- 0.80
+sd_y <- 1
+sesoi <- 0.30
+
+n_needed <- power.t.test(delta = sesoi, sd = sd_y, sig.level = alpha,
+                         power = power_target, type = "two.sample",
+                         alternative = "two.sided")$n
+
+n_feasible <- 100
+power_if_feasible <- power.t.test(n = n_feasible, delta = sesoi, sd = sd_y,
+                                  sig.level = alpha, type = "two.sample",
+                                  alternative = "two.sided")$power
+
+mde_if_feasible <- power.t.test(n = n_feasible, sd = sd_y, sig.level = alpha,
+                                power = power_target, type = "two.sample",
+                                alternative = "two.sided")$delta
+
+n_needed_ceil <- ceiling(n_needed)
+
+cat(paste0("n per group (80% power, MDE=0.30): ", n_needed_ceil, " (N=", 2 * n_needed_ceil, ")\n"))
+cat(paste0("If n=", n_feasible, ", power for MDE: ", sprintf("%.2f", power_if_feasible), "\n"))
+cat(paste0("If n=", n_feasible, ", MDE (80% power): ", sprintf("%.2f", mde_if_feasible), "\n"))
+@
+
+\normalsize
+\vspace{0.2cm}
+\begin{itemize}
+\item If the feasible $n$ is too small for your MDE, either change the design (reduce noise) or change the inferential goal (report range of MDEs/sensitivity).
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{What you will preregister (Week 9)}
+\begin{itemize}
+\item Outcome(s) and estimand(s)
+\item MDE
+\item Analysis plan (including multiple testing decisions)
+\item Planned sample size and the justification approach
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}
+\Large
+In one sentence: what would you change to increase power in your own design?
+\normalsize
+\end{frame}
+
+%-------------------------------------------------------------------------------%
+\backupbegin
+%-------------------------------------------------------------------------------%
+\begin{frame}[allowframebreaks]{References}
+\nocite{coppock2022power}
+\nocite{lakens2022samplesize}
+
+\bibliographystyle{apalike}
+\bibliography{../assets/bib}
+\end{frame}
+%-------------------------------------------------------------------------------%
+\backupend
+\end{document}
