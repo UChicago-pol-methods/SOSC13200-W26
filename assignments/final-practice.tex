@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{center}
+\textbf{SOSC 13200 (W26): Social Science Inquiry II --- Practice In-Class Final}
+\end{center}
+
+\noindent\textbf{Time:} 80 minutes \\
+\textbf{Notes:} Closed notes. No R / no computers. \\
+\textbf{Allowed:} Pencil/pen; non-programmable calculator. \\
+\textbf{Instructions:} Answer all questions. Show your work for calculations; partial credit is available. If you use notation, define it.
+
+\vspace{0.5em}
+\noindent\textbf{Provided formulas (you may use these)}
+\begin{itemize}
+  \item Independence: $\Pr[A\cap B]=\Pr[A]\Pr[B]$
+  \item 95\% CI (normal approx): estimate $\pm 1.96\times SE$
+  \item $t$-statistic (generic): $t=\dfrac{\text{estimate} - \text{null}}{SE}$
+\end{itemize}
+
+\noindent\textbf{Power (two-arm design, equal $n$ per arm; normal approximation)}
+\begin{itemize}
+  \item Solve for $n$:
+  \[
+  n \approx 2\left(\frac{(z_{1-\alpha/2}+z_{\text{power}})\sigma}{\text{MDE}}\right)^2
+  \]
+  \item Notation: $z_p$ is the $p$th quantile of $N(0,1)$ (so $\Pr[Z\le z_p]=p$ for $Z\sim N(0,1)$).
+  \item Helpful quantiles (given): $z_{0.975}=1.96$, $z_{0.80}=0.84$
+  \item If a pre-treatment covariate explains fraction $R^2$ of outcome variance, residual sd is approximately:
+  \[
+  \sigma_{\text{resid}} \approx \sigma\sqrt{1-R^2}.
+  \]
+\end{itemize}
+
+\clearpage
+\noindent\textbf{Question 1 (6 points): Hypothesis tests, p-values, and confidence intervals}
+
+\noindent\textbf{Setup:} A city runs a randomized ``get-out-the-vote'' experiment. Some registered voters receive a door-to-door
+canvassing visit ($W=1$) and others do not ($W=0$). Let $Y$ be an indicator for whether a person votes in the next election.
+Suppose your estimate of the difference in mean turnout between treated and control voters is:
+\begin{itemize}
+  \item $\widehat{ATE}=0.05$ (a 5 percentage-point increase)
+  \item Standard error: $SE(\widehat{ATE})=0.03$
+\end{itemize}
+
+\begin{enumerate}[label=1\alph*)]
+  \item (2 pts) In words, state what the null hypothesis $H_0: ATE=0$ means in this setting.
+  Then compute the $t$-statistic for testing it.
+  \item (2 pts) Compute an approximate 95\% confidence interval for the ATE.
+  \item (2 pts) Briefly interpret the confidence interval and what it implies about statistical significance at the 5\% level.
+\end{enumerate}
+
+\vspace{1.0em}
+\noindent\textbf{Question 2 (6 points): Regression and covariate adjustment}
+
+\noindent\textbf{Setup:} You study the effect of a job-training program on monthly earnings.
+Program participation $W$ is randomized ($W=1$ offered training, $W=0$ not offered). You also have a \textbf{baseline} measure
+of monthly earnings, $base$, collected before randomization.
+
+\vspace{0.5em}
+\noindent You estimate two regressions (standard errors in parentheses):
+
+\vspace{0.25em}
+\noindent\textbf{Model 1 (unadjusted):} $Y_i=\alpha + \tau W_i + \varepsilon_i$ \\
+$\hat\tau=120\ (80)$
+
+\vspace{0.5em}
+\noindent\textbf{Model 2 (adjusted):} $Y_i=\alpha + \tau W_i + \gamma\, base_i + \varepsilon_i$ \\
+$\hat\tau=120\ (50)$ \\
+$\hat\gamma=0.70\ (0.06)$
+
+\vspace{0.75em}
+\begin{enumerate}[label=2\alph*)]
+  \item (3 pts) Interpret $\hat\tau$ from Model 1 in words.
+
+  \vspace{0.5em}
+  \item (3 pts) In a randomized experiment, how is Model 1 related to a difference-in-means estimator?
+  Then explain briefly why adding $base$ can reduce the standard error on $\hat\tau$.
+\end{enumerate}
+
+\vspace{1.0em}
+\noindent\textbf{Question 3 (4 points): Randomization inference (permutation test)}
+
+\noindent\textbf{Setup:} A researcher studies discrimination in email responses from landlords.
+They randomize the perceived race of a prospective tenant by varying the name on an email inquiry ($W=1$ vs $W=0$),
+and record whether the landlord replies ($Y=1$ reply, $0$ otherwise).
+Suppose the observed difference-in-means estimate is $\widehat{ATE}_{obs}=-0.07$.
+They run a randomization inference test by shuffling the treatment label $W$ (without replacement) $B=2000$ times, recomputing a placebo ATE each time.
+
+\noindent They find that in \textbf{150} of the 2000 permutations, $|\widehat{ATE}^{(b)}|\ge |\widehat{ATE}_{obs}|$.
+
+\begin{enumerate}[label=3\alph*)]
+  \item (2 pts) Compute the (two-sided) randomization-inference p-value.
+  \item (2 pts) Briefly interpret this p-value in words.
+\end{enumerate}
+
+\vspace{1.0em}
+\noindent\textbf{Question 4 (4 points): Power, effect sizes, and sample size}
+
+\noindent\textbf{Setup:} You are designing a two-arm follow-up experiment with equal sample size per arm,
+outcome sd $\sigma=1.0$, two-sided $\alpha=0.05$, and target power $=0.80$.
+
+\begin{enumerate}[label=4\alph*)]
+  \item (2 pts) Use the provided power formula to compute the approximate sample size \textbf{per arm} needed to detect $\text{MDE}=0.20$.
+  \textbf{Show your steps} by filling in the intermediate quantities (use the helpful quantiles given above):
+  \begin{itemize}
+    \item $z_{1-\alpha/2}=z_{0.975}=\underline{\hspace{2cm}}$
+    \item $z_{\text{power}}=z_{0.80}=\underline{\hspace{2cm}}$
+    \item $z_{1-\alpha/2}+z_{\text{power}}=\underline{\hspace{2cm}}$
+    \item $\left(\dfrac{(z_{1-\alpha/2}+z_{\text{power}})\sigma}{\text{MDE}}\right)=\underline{\hspace{2cm}}$
+    \item $n\approx 2\left(\dfrac{(z_{1-\alpha/2}+z_{\text{power}})\sigma}{\text{MDE}}\right)^2=\underline{\hspace{2cm}}$
+  \end{itemize}
+
+  \vspace{0.75em}
+  \item (2 pts) Now suppose you will adjust for a strong pre-treatment covariate, and you expect it to explain $R^2=0.50$ of the outcome variance.
+  \begin{enumerate}[label=\arabic*.]
+    \item (1 pt) Approximate the new residual standard deviation $\sigma_{\text{resid}}$.
+    \item (1 pt) Plug $\sigma_{\text{resid}}$ into the same power formula to get the new required $n$ per arm (approximately).
+    In one sentence: does the required sample size go up, go down, or stay the same?
+  \end{enumerate}
+\end{enumerate}
+
+\vspace{1.0em}
+\noindent\textbf{Question 5 (4 points): Observational regression and causal claims}
+
+\noindent\textbf{Setup:} You have observational data on individuals. Let $X$ be weekly hours of social media use and
+$Y$ be a mental-health index (higher values mean better mental health).
+You estimate the bivariate regression:
+\[
+Y_i=\alpha + \beta X_i + \varepsilon_i,
+\]
+and you find $\hat\beta=-0.30$.
+
+\begin{enumerate}[label=5\alph*)]
+  \item (2 pts) Give one plausible confounder (an omitted variable) that could make $\hat\beta$ differ from the causal effect
+  of social media use on mental health. State whether you think the bias is likely \textbf{upward} or \textbf{downward}, and explain briefly.
+
+  \vspace{0.5em}
+  \item (2 pts) Suppose your sample is extremely large, and you estimate $\hat\beta=-0.30$ with a tiny standard error
+  (so the p-value is essentially 0). Explain why this does \textbf{not} by itself justify a causal interpretation
+  of $\hat\beta$, and name one additional design feature or kind of evidence that would make a causal claim more credible.
+\end{enumerate}
+
+\vspace{1.0em}
+\noindent\textbf{Question 6 (6 points): Inference, measurement, and preregistration}
+
+\begin{enumerate}[label=6\alph*)]
+  \item (4 pts) In 3--5 bullet points, sketch a \textbf{pre-analysis plan} for a randomized experiment that has
+  multiple treatment arms plus a control (e.g., different versions of a reminder message).
+  Your plan must include:
+  \begin{enumerate}[label=\arabic*.]
+    \item one \textbf{primary estimand/contrast} (state it in words), and
+    \item the \textbf{null hypothesis} for that primary contrast (state it in words), and
+    \item two additional things you would commit to in advance to reduce researcher degrees of freedom
+    (e.g., handling missing data, covariates, subgroup analyses, multiple comparisons, outliers).
+  \end{enumerate}
+
+  \vspace{0.75em}
+  \item (2 pts) A researcher measures 12 outcomes and reports only the outcomes with $p<0.05$.
+  \begin{enumerate}[label=\arabic*.]
+    \item In one sentence: what credibility problem does this create?
+    \item Suppose (for simplicity) the 12 tests are independent and \textbf{all null hypotheses are true}.
+    What is the probability of seeing \textbf{at least one} statistically significant result at $\alpha=0.05$?
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}
+
