@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames}]{beamer}
+% !Rnw weave = knitr
+\documentclass[xcolor=dvipsnames, handout]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 \usepackage{verbatim}
@@ -24,11 +25,11 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo = FALSE>>=
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
 knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs81/",
                       message = FALSE, warning = FALSE)
 if (!dir.exists("figs81")) dir.create("figs81")
@@ -45,12 +46,13 @@ if (!dir.exists("figs81")) dir.create("figs81")
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 
-<<packages>>=
+<<packages, message = FALSE>>=
 library(ggplot2)
 library(estimatr)
 library(modelsummary)
 library(gridExtra)
 set.seed(60637)
+config_modelsummary(startup_message = FALSE)
 
 # Make modelsummary output LaTeX via kableExtra (avoids tabularray/tinytable)
 options(
@@ -218,8 +220,8 @@ If we were to see the full data:
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 n <- 50000
 
 x <- sample(seq(0,1, .05), n, replace = TRUE)
@@ -251,8 +253,8 @@ If we only saw 100 observations from the data:
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 lm_eqn <- function(df){
   m <- lm(y ~ x, df);
   eq <- substitute(italic(y) == a + b %.% italic(X), 
@@ -299,8 +301,8 @@ If we only saw 100 observations from the data:
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 x <- sample(seq(0,1, .05), n, replace = TRUE)
 y <- 3 + 2*x + rnorm(n)
 df <- data.frame(x = x,y = y)
@@ -332,8 +334,8 @@ If we only saw 100 observations from the data:
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 x <- sample(seq(0,1, .05), n, replace = TRUE)
 y <- 3 + 2*x + rnorm(n)
 df <- data.frame(x = x,y = y)
@@ -366,8 +368,8 @@ If we only saw 100 observations from the data:
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 x <- sample(seq(0,1, .05), n, replace = TRUE)
 y <- 3 + 2*x + rnorm(n)
 df <- data.frame(x = x,y = y)
@@ -401,8 +403,8 @@ If we only saw 100 observations from the data:
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 x <- sample(seq(0,1, .05), n, replace = TRUE)
 y <- 3 + 2*x + rnorm(n)
 df <- data.frame(x = x,y = y)
@@ -448,8 +450,8 @@ g + geom_point(aes(x = x, y = y), alpha = 0.5)
 
 \begin{figure}
 \centering
-\resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+\resizebox{\textwidth}{0.62\textheight}{
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 X <- runif(1e3)
 Y <- 3*X + rnorm(1e3, sd = 0.57)
 Y2 <- 3*X + rnorm(1e3)*X

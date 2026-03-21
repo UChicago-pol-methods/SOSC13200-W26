@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames}, handout]{beamer}
+% !Rnw weave = knitr
+\documentclass[handout,xcolor=dvipsnames]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 \usepackage{verbatim}
@@ -20,12 +21,15 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo = FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs62/")
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE,
+  fig.path = "figs62/"
+)
 if (!dir.exists("figs62")) dir.create("figs62")
 @
 %-------------------------------------------------------------------------------%
@@ -35,7 +39,7 @@ if (!dir.exists("figs62")) dir.create("figs62")
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 
-<<packages>>=
+<<packages, warning=FALSE, message=FALSE>>=
 library(ggplot2)
 library(estimatr)
 set.seed(60637)
@@ -132,7 +136,7 @@ mean(x_observed)
 }
 
 %-------------------------------------------------------------------------------%
-\begin{frame}[fragile]
+\begin{frame}{Repeated samples and the sample mean}
 
 
 \begin{itemize}
@@ -142,7 +146,7 @@ mean(x_observed)
 \end{itemize}
 \pause
 
-<<>>=
+<<echo = FALSE, include = FALSE>>=
 
 n_iter <- 10000
 
@@ -151,33 +155,10 @@ x_mat <- replicate(n_iter, sample(X,
                                  replace = TRUE,
                                  size = n))
 
-dim(x_mat)
-head(x_mat[,1])
-head(x_mat[,2])
-@
-
-\end{frame}
-
-
-%%%%%NOTE%%%%%
-
-
-\note{
-\scriptsize \singlespacing
-
-\begin{itemize}
-\item xxxx
-\end{itemize}
-}
-
-%-------------------------------------------------------------------------------%
-\begin{frame}[fragile]
-<<message = FALSE>>=
-
 sample_means <- apply(x_mat, 2, mean)
-length(sample_means)
-head(sample_means)
 @
+
+In the simulation below, we repeat the sampling exercise 10{,}000 times and track the sample mean from each repetition.
 
 \end{frame}
 
@@ -199,7 +180,7 @@ head(sample_means)
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.45\textheight}{
-<<fig = TRUE, fig.width = 6, fig.height =4, fig.align='center', echo = FALSE>>=
+<<fig.width = 6, fig.height =4, fig.align='center', echo = FALSE>>=
 ggplot(data.frame(sample_means = sample_means), aes(x = sample_means)) +
   geom_histogram(bins = 20, position = 'identity', color = 'white') +
   geom_vline(xintercept = Ex, color = 'grey', lty = 'dashed')
@@ -261,7 +242,7 @@ We'll do the same process with our simulations.
 \begin{figure}
 \centering
 \resizebox{0.45\textwidth}{!}{
-<<fig = TRUE, fig.width = 6, fig.height =4, fig.align='center', echo = FALSE>>=
+<<fig.width = 6, fig.height =4, fig.align='center', echo = FALSE>>=
 sample_var <- apply(x_mat, 2, var)
 
 ggplot(data.frame(sample_var = sample_var), aes(x = sample_var)) +
@@ -577,7 +558,7 @@ The normal distribution has a bell curve shape, with more density around the mid
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, warning=FALSE>>=
 result_n <- rnorm(n = 10000)
 plotdata <- data.frame(
   x = result_n,
@@ -593,11 +574,11 @@ g <- ggplot(plotdata, aes(x = x, y = fx)) +
 
 g +
   geom_vline(xintercept = 0, lty = 'dashed', color = 'skyblue') + 
-  geom_segment(aes(x = 0, xend = -1, y = 0.2, yend = 0.2), 
-               arrow = arrow(length = unit(0.25, "cm")), color = 'skyblue') +
-  geom_segment(aes(x = 0, xend = 1, y = 0.2, yend = 0.2), 
-               arrow = arrow(length = unit(0.25, "cm")), color = 'skyblue') +
-  geom_point(aes(x = 0, y = 0.2), color = 'skyblue') + 
+  annotate("segment", x = 0, xend = -1, y = 0.2, yend = 0.2,
+           arrow = arrow(length = unit(0.25, "cm")), color = 'skyblue') +
+  annotate("segment", x = 0, xend = 1, y = 0.2, yend = 0.2,
+           arrow = arrow(length = unit(0.25, "cm")), color = 'skyblue') +
+  annotate("point", x = 0, y = 0.2, color = 'skyblue') + 
   annotate(geom="text", x = 0.5, y = .19, label = as.character(expression(sigma)), parse = TRUE, color = 'steelblue') + 
   annotate(geom="text", x = -0.5, y = .19, label = as.character(expression(sigma)), parse = TRUE, color = 'steelblue') + 
   annotate(geom="text", x = 0.075, y = .42, label = as.character(expression(mu)), parse = TRUE, color = 'steelblue') + 
@@ -628,7 +609,7 @@ If we want to describe symmetric bounds around the mean that contain 95\% of the
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 g +
   stat_function(fun = dnorm,
                 geom = "area",
@@ -730,7 +711,7 @@ Putting it together, the 95\% normal approximation-based confidence interval.
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 ggplot(data.frame(conf_lower = CI95[1], conf_upper = CI95[2], mean = theta_hat),
        aes(y = 1, x = mean)) +
   geom_point(color = 'skyblue') +
@@ -804,7 +785,7 @@ head(sample_CIs, 3)
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 sample_CIs$color <- factor(1 + 1*((Ex >= sample_CIs$conf_lower) & 
         (Ex <= sample_CIs$conf_upper)))
 ggplot(sample_CIs,
@@ -993,9 +974,24 @@ pager_agg$criminal_record <- factor(pager_agg$record,
 pager_agg
 @
 
+\end{frame}
+
+
+%%%%%NOTE%%%%%
+\note{
+\scriptsize \singlespacing
+
+\begin{itemize}
+\item  xxxx
+\end{itemize}
+\~\n}
+
+%-------------------------------------------------------------------------------%
+\begin{frame}{Pager's published callback rates}
+
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{"../assets/pager_2003".png}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{"../assets/pager_2003".png}
 \end{figure}
 
 \end{frame}
@@ -1308,7 +1304,7 @@ confint.default(model2)
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 hist(rnorm(10))
 @
 }
@@ -1372,5 +1368,4 @@ hist(rnorm(10))
 <<echo = FALSE>>=
 f <- 'slides_62.Rnw'
 knitr::purl(f)
-knitr::Sweave2knitr(f)
 @

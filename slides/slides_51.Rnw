@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames}]{beamer}
+% !Rnw weave = knitr
+\documentclass[xcolor=dvipsnames, handout]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 \usepackage{verbatim}
@@ -20,11 +21,14 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 
 <<setup, include=FALSE, echo = FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs51/")
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE,
+  fig.path = "figs51/"
+)
 if (!dir.exists("figs51")) dir.create("figs51")
 @
 
@@ -36,7 +40,7 @@ if (!dir.exists("figs51")) dir.create("figs51")
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 \small
-<<packages>>=
+<<packages, warning = FALSE>>=
 # install.packages('../assets/ri_0.9.tar.gz', 
 #                  repos = NULL, type = 'source')
 library(ri)
@@ -53,7 +57,8 @@ set.seed(60637)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Quick check: everyone can load \texttt{ri} and \texttt{ggplot2}; we will use \texttt{ri} to do randomization inference (Fisher-style tests).
+\item The random seed is just for reproducibility of any simulated examples; it does \emph{not} change the underlying logic of the test.
 \end{itemize}
 
 }
@@ -82,7 +87,8 @@ as discussed in
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item We start with a tiny randomized experiment so we can see every moving part (potential outcomes, treatment assignment, estimand vs estimator, uncertainty).
+\item The numbers in the table are simplified to make the inference ideas transparent; the goal is the logic, not the specific study details.
 \end{itemize}
 
 }
@@ -122,7 +128,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item This is the ``God's-eye view'': we can see $Y_i(0)$ and $Y_i(1)$ for every village.
+\item Individual treatment effect: $\tau_i = Y_i(1)-Y_i(0)$. The ATE is the average of these $\tau_i$'s (here, 5).
+\item In real life we never observe both potential outcomes for the same unit (the fundamental problem of causal inference).
 \end{itemize}
 
 }
@@ -164,7 +172,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Emphasize the missing counterfactuals: each unit reveals only one potential outcome, so $\tau_i$ is never directly observed.
+\item Difference-in-means is a natural estimator of the ATE under random assignment: treated average minus control average.
+\item Here the estimated ATE is 6.5, which differs from the true ATE (5) because of random assignment (sampling variation from randomization).
 \end{itemize}
 
 }
@@ -202,7 +212,9 @@ Why might these three quantities differ?
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item An estimand is what we want to know about the world (a target parameter), not what we can compute from the sample.
+\item ATE vs ATT vs ATC differ when treatment effects are heterogeneous and/or when treatment assignment is correlated with potential outcomes.
+\item Good habit: name the estimand \emph{before} picking an estimator.
 \end{itemize}
 
 }
@@ -228,7 +240,9 @@ We can also think of it as a recipe. Given some data, $X_1, \dots, X_n$, follow 
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Estimator = rule/algorithm that maps data to a number (a random variable because it depends on random data/assignment).
+\item Distinguish: estimand (fixed but unknown) vs estimator (random) vs estimate (one realized value).
+\item We'll use difference-in-means as our running estimator for the ATE.
 \end{itemize}
 
 }
@@ -250,7 +264,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item The estimate is what you compute \emph{this time} from the observed data.
+\item If we repeated the random assignment (or re-sampled), we would get different estimates even if the true estimand stays the same.
 \end{itemize}
 
 }
@@ -275,7 +290,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Quick mnemonic: estimand = what you want; estimator = how you compute; estimate = what you got.
+\item We'll keep coming back to this whenever we talk about uncertainty and inference.
 \end{itemize}
 
 }
@@ -300,7 +316,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Write $\hat\tau_{DM}=\bar Y_1-\bar Y_0$; the formula here is just the algebraic way to compute those means.
+\item Under random assignment, this is an unbiased estimator of the ATE; the big question is how variable it is.
 \end{itemize}
 
 }
@@ -325,7 +342,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Transition: we have an estimate, but we need a principled way to quantify uncertainty.
+\item With only 2 treated villages here, random assignment can produce ``weird'' splits; the estimate might swing a lot.
+\item This motivates hypothesis testing / randomization inference: what would we see \emph{by chance} under a null?
 \end{itemize}
 
 }
@@ -346,7 +365,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Key Fisher move: hold outcomes fixed, vary only the random assignment.
+\item Under the sharp null ($\tau_i=0$ for all $i$), every unit's outcome is the same under treatment and control, so only $W$ changes across re-randomizations.
+\item Then the distribution of the estimator under re-randomization is known.
 \end{itemize}
 
 }
@@ -370,7 +391,9 @@ Assuming all treatment effects are exactly zero is called the \textbf{sharp null
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Define ``sharp'' null: specifies the missing potential outcomes for every unit (so we can impute $Y_i(0)$ and $Y_i(1)$).
+\item Contrast with ``weak'' null like $\E[\tau_i]=0$, which does \emph{not} tell us each individual $\tau_i$.
+\item Historical note: Fisher framed inference around the randomization itself.
 \end{itemize}
 
 }
@@ -395,7 +418,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Under $H_0$, $Y_i(0)=Y_i(1)$ for all $i$; therefore the observed $Y_i$ is the same no matter what assignment we imagine.
+\item This is what lets us construct the full set of potential outcomes needed for a randomization test.
 \end{itemize}
 \\~\
 }
@@ -416,7 +440,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item To get a null distribution, we need the assignment mechanism: here, exactly 2 treated out of 7 (complete randomization with fixed treated count).
+\item That pins down the set of possible $W$ vectors and their probabilities.
 \end{itemize}
 \\~\
 }
@@ -446,7 +471,8 @@ Village 7 & \textcolor{red}{?} & 30 & 1 & 30 & \textcolor{red}{?}
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Under the sharp null, the missing counterfactuals are just the observed outcomes copied over.
+\item Intuition: if treatment has no effect on anyone, the outcome we saw would have happened regardless of assignment.
 \end{itemize}
 \\~\
 }
@@ -476,7 +502,8 @@ Village 7 & \textcolor{red}{30} & 30 & 1 & 30 & \textcolor{red}{0}
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Now every $\tau_i$ is 0 by construction, but the \emph{estimate} $\hat\tau$ can still vary with assignment.
+\item This is the key distinction: ``no true effect'' does not imply ``we always estimate 0'' in finite samples.
 \end{itemize}
 \\~\
 }
@@ -514,7 +541,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Re-randomize $W$ while holding the $Y$'s fixed (sharp null world).
+\item Compute the same estimator each time; watch how much it can vary even when the null is true.
+\item We are building the randomization (null) distribution of $\hat\tau_{DM}$.
 \end{itemize}
 \\~\
 }
@@ -552,7 +581,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Another re-randomization: now $\hat\tau_{DM}=3$.
+\item Point: even under the sharp null, we can see estimates that look ``non-zero'' just from chance imbalance.
+\item We need to compare our observed estimate to this reference distribution.
 \end{itemize}
 \\~\
 }
@@ -590,7 +621,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Yet another re-randomization: now $\hat\tau_{DM}=10$.
+\item This illustrates that ``large'' estimates are possible under the null in very small samples.
+\item The p-value answers: how often do we see estimates at least this extreme under the null?
 \end{itemize}
 \\~\
 }
@@ -612,7 +645,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item The key ingredient is the known assignment rule: ``choose exactly 2 of 7 for treatment''.
+\item Because the assignment mechanism is known, we can enumerate (or simulate) what would happen under re-randomization.
 \end{itemize}
 \\~\
 }
@@ -646,7 +680,9 @@ df
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item This is the observed dataset: a treatment indicator $W$ and an outcome $Y$ for each of 7 villages.
+\item We'll treat the potential outcomes as fixed and use the assignment mechanism to generate the null distribution.
+\item Because the sample is tiny, we can enumerate all assignments (an ``exact'' randomization test).
 \end{itemize}
 \\~\
 }
@@ -673,7 +709,8 @@ Y0 <- df$Y[which(df$W == 0)]
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Compute the observed difference-in-means estimate $\hat\tau_{DM}$ from the realized assignment.
+\item We'll compare this value (6.5) to what we'd typically see under the sharp null.
 \end{itemize}
 \\~\
 }
@@ -702,7 +739,8 @@ df
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Under the sharp null, $Y_i(0)=Y_i(1)=Y_i$; so we can ``fill in'' both potential outcomes by copying the observed $Y$.
+\item This step is what makes the randomization distribution computable.
 \end{itemize}
 \\~\
 }
@@ -724,7 +762,8 @@ Consider all the ways treatment could be assigned: (this is what \texttt{ri} is 
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Enumerate all possible treatment vectors consistent with the design (exactly 2 treated out of 7).
+\item There are ${7 \\choose 2}=21$ possible assignments.
 \end{itemize}
 \\~\
 }
@@ -754,7 +793,8 @@ dm
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item For each possible assignment, compute the same estimator $\hat\tau_{DM}$.
+\item The resulting list is the \emph{exact} null distribution of the estimator under Fisher's sharp null.
 \end{itemize}
 \\~\
 }
@@ -778,7 +818,8 @@ mean(dm)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Under complete randomization and the sharp null, the randomization distribution of $\hat\tau_{DM}$ is centered at 0.
+\item Intuition: treatment labels are unrelated to outcomes under $H_0$, so positive and negative differences balance out.
 \end{itemize}
 \\~\
 }
@@ -787,7 +828,7 @@ mean(dm)
 \begin{frame}[fragile]
 
 \begin{center}
-<<fig.width = 5, fig.height =5, fig = TRUE, echo=FALSE, out.width='0.9\\textwidth'>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, out.width='0.6\\textwidth'>>=
 gg_bins <- aggregate(list(rf = dm), by = list(dm = dm), length)
 gg_bins$col <- abs(gg_bins$dm) >= dm_hat
 
@@ -808,7 +849,9 @@ ggplot(gg_bins, aes(x = dm, y = rf)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item This bar chart is the randomization distribution of $\hat\tau_{DM}$ under the sharp null.
+\item Red line at 0: where we'd expect the estimate to be centered if the null is true.
+\item Next step: locate our observed estimate (6.5) and compute how ``extreme'' it is relative to this distribution.
 \end{itemize}
 \\~\
 }
@@ -830,7 +873,8 @@ prop.table(table(dm))
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item The two-tailed p-value here is the share of assignments that produce an estimate at least as extreme as 6.5 in absolute value.
+\item With only 21 possible assignments, we can literally count them (exact p-value).
 \end{itemize}
 \\~\
 }
@@ -852,7 +896,8 @@ prop.table(table(dm))
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Interpretation: under $H_0$, about 38\% of re-randomizations would look at least this extreme.
+\item Emphasize: p-value is about the \emph{distribution under the null}, not ``probability the null is true''.
 \end{itemize}
 \\~\
 }
@@ -881,7 +926,8 @@ That's because it is doing the exact same thing under the hood.
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Sanity check: \texttt{dispdist()} is just automating what we did (enumerate assignments, compute statistic, compare to observed).
+\item Use it to reinforce that inference is coming from the design (randomization), not from large-sample approximations.
 \end{itemize}
 \\~\
 }
@@ -903,7 +949,8 @@ That's because it is doing the exact same thing under the hood.
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item ``Exact'' because we enumerated the full randomization distribution, not a simulation and not a normal approximation.
+\item Preview: when the number of assignments explodes, we'll approximate by simulation (randomization inference via Monte Carlo).
 \end{itemize}
 \\~\
 }
@@ -947,7 +994,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Be explicit about what $H_0$ and $H_A$ mean in potential-outcomes terms.
+\item Decision language: reject vs fail to reject; never ``accept $H_0$'' in the usual NHST framing.
+\item Here, large p-value $\Rightarrow$ data are not surprising under the null.
 \end{itemize}
 \\~\
 }
@@ -971,7 +1020,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item The estimator is a random variable because $W$ is random (by design) and therefore the computed $\hat\tau$ varies across realizations.
+\item We cannot observe the ``true'' sampling distribution in general, but we can characterize it under a specified null.
+\item This is the core logic of Fisher randomization tests.
 \end{itemize}
 \\~\
 }
@@ -997,7 +1048,8 @@ Note that we are conducting inference with respect to: \pause
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Scope conditions matter: what population, what treatment, what outcome, what assignment mechanism.
+\item If any of these change, the estimand or the relevant randomization distribution changes too.
 \end{itemize}
 \\~\
 }
@@ -1020,7 +1072,9 @@ Note that we are conducting inference with respect to: \pause
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item The null is a formal statement about the world that implies a distribution for a chosen test statistic.
+\item In experiments, a common null is ``no effect''; but you can test other nulls (e.g., effect size equals 0.2, or effect is nonnegative).
+\item Always connect the null to the substantive theory you are trying to learn about.
 \end{itemize}
 \\~\
 }
@@ -1041,7 +1095,9 @@ Note that we are conducting inference with respect to: \pause
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Sharp null is often unrealistic (effects can vary), but it is a clean starting point for understanding randomization tests.
+\item If we reject the sharp null, we learn ``some effect exists for some units''; if we fail to reject, we have limited evidence, especially in small samples.
+\item Later we'll discuss other inferential targets beyond the sharp null.
 \end{itemize}
 \\~\
 }
@@ -1065,7 +1121,8 @@ Data is available at the Yale ISPS data archive: \\~\
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Transition from toy example to a real field experiment dataset.
+\item Goal: same Fisher logic, but with a huge number of possible assignments (so we approximate rather than enumerate).
 \end{itemize}
 
 }
@@ -1091,7 +1148,8 @@ head(df)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Load the Butler--Broockman field experiment data (audit emails to legislators).
+\item Point out: this is \emph{experimental} data (treatment randomized), so we can do design-based inference.
 \end{itemize}
 
 }
@@ -1112,7 +1170,8 @@ str(df)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Walk through variable names: treatment indicators for sender name, outcomes for reply.
+\item Emphasize unit of analysis: legislator-email contact.
 \end{itemize}
 
 }
@@ -1133,7 +1192,8 @@ str(df)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Source: randomized audit study; treatment is the perceived race signaled by the sender name.
+\item Population for inference here is the set of legislators contacted in the experiment; the randomness comes from assignment, not sampling.
 \end{itemize}
 \\~\
 }
@@ -1165,7 +1225,8 @@ table(df$reply_atall)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Check balance: treatment assigned to about half the contacts (good sign randomization worked as intended).
+\item Outcome is binary reply; we will use difference-in-means as the estimand for reply rate differences.
 \end{itemize}
 \\~\
 }
@@ -1208,7 +1269,9 @@ Legislators were 1.7 percentage points less likely to reply to an email if the s
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Compute $\hat\tau_{DM}=\bar Y_{W=1}-\bar Y_{W=0}$: difference in reply rates.
+\item Interpret sign and magnitude (about -1.8 percentage points).
+\item Next: is this difference bigger than what we'd expect just by chance under Fisher's null?
 \end{itemize}
 \\~\
 }
@@ -1225,7 +1288,8 @@ Note that again, the population that we're taking inference over is legislators-
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Stress design-based perspective: we are not assuming i.i.d.\ sampling from a superpopulation.
+\item The source of uncertainty is the randomized assignment of treatment labels.
 \end{itemize}
 \\~\
 }
@@ -1261,7 +1325,9 @@ my_ri <- function(df){
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item With ${4859 \\choose 2428}$ assignments, exact enumeration is impossible.
+\item Monte Carlo randomization inference: repeatedly shuffle $W$ (keeping the treated count fixed) and recompute the statistic.
+\item \texttt{my\_ri()} is the ``one re-randomization'' function; \texttt{replicate()} will call it many times.
 \end{itemize}
 \\~\
 }
@@ -1289,7 +1355,8 @@ my_ri(df)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Each call to \texttt{my\_ri()} shuffles treatment and gives a new ``placebo'' estimate under the sharp null.
+\item These values should fluctuate around 0; if the observed estimate is in the tails, that's evidence against $H_0$.
 \end{itemize}
 \\~\
 }
@@ -1318,7 +1385,8 @@ head(dm)
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item We approximate the randomization distribution with many shuffles (here 1000).
+\item More iterations $\Rightarrow$ more stable approximation of the p-value, but computation cost rises.
 \end{itemize}
 \\~\
 }
@@ -1328,7 +1396,7 @@ head(dm)
 
 
 \begin{center}
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE, out.width='0.9\\textwidth'>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, out.width='0.6\\textwidth'>>=
 null_dist <- data.frame(dm)
 null_dist$bins <- cut(dm, breaks = 50)
 null_dist <- aggregate(list(count = null_dist$dm), by = list(bins = null_dist$bins), length)
@@ -1345,10 +1413,11 @@ ggplot(null_dist, aes(x = bin_mid, y = count)) +
 
 \pause
 
-<<>>=
-(pval <- mean(abs(dm) >= abs(dm_hat)))
+<<echo = FALSE, include = FALSE>>=
+pval_twotailed <- mean(abs(dm) >= abs(dm_hat))
 @
 
+The two-tailed p-value is the probability mass in both tails beyond the observed estimate.
 
 \end{frame}
 
@@ -1358,7 +1427,9 @@ ggplot(null_dist, aes(x = bin_mid, y = count)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Histogram of simulated null distribution of $\hat\tau_{DM}$ from shuffling $W$.
+\item Compute two-tailed p-value: fraction of simulated estimates with $|\hat\tau|\ge|\hat\tau^{obs}|$.
+\item Interpretation: how surprising is our observed difference under Fisher's null?
 \end{itemize}
 \\~\
 }
@@ -1368,7 +1439,7 @@ ggplot(null_dist, aes(x = bin_mid, y = count)) +
 
 
 \begin{center}
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE, out.width='0.9\\textwidth'>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, out.width='0.6\\textwidth'>>=
 
 ggplot(null_dist, aes(x = bin_mid, y = count, fill = col)) +
   geom_col() +
@@ -1380,9 +1451,9 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col)) +
 
 \pause
 
-<<>>=
-(pval <- mean(abs(dm) >= abs(dm_hat)))
-@
+\[
+p = \Pr_0[|\hat{\tau}| \ge |\hat{\tau}^{obs}|] \approx \Sexpr{round(pval_twotailed, 3)}
+\]
 
 
 \end{frame}
@@ -1393,7 +1464,8 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Same idea, but now the ``as extreme as observed'' bins are highlighted.
+\item Visually reinforces what the p-value is counting in a two-tailed test.
 \end{itemize}
 \\~\
 }
@@ -1421,7 +1493,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Two-sided alternatives ask: is there evidence the effect is different from 0 in \emph{either} direction?
+\item The corresponding p-value counts estimates in both tails (by absolute value).
 \end{itemize}
 \\~\
 }
@@ -1450,7 +1523,9 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item One-sided alternatives are appropriate when theory implies a direction (e.g., effect should be negative).
+\item One-sided p-value counts only the tail in the hypothesized direction (here, left tail).
+\item Caution: choosing one- vs two-sided should be decided \emph{before} looking at results.
 \end{itemize}
 \\~\
 }
@@ -1471,7 +1546,8 @@ $$
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Connect to substantive theory: here, discrimination story implies lower reply rates for the treatment name.
+\item Translate to test-statistic language: ``more negative than expected under the null''.
 \end{itemize}
 \\~\
 }
@@ -1481,7 +1557,7 @@ $$
 
 
 \begin{center}
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE, out.width='0.9\\textwidth'>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, out.width='0.6\\textwidth'>>=
 null_dist$col2 <- null_dist$bin_min <= dm_hat
 
 ggplot(null_dist, aes(x = bin_mid, y = count)) +
@@ -1494,10 +1570,11 @@ ggplot(null_dist, aes(x = bin_mid, y = count)) +
 
 \pause
 
-<<>>=
-(pval <- mean(dm <= dm_hat))
+<<echo = FALSE, include = FALSE>>=
+pval_lower <- mean(dm <= dm_hat)
 @
 
+The lower-tail p-value is the probability mass to the left of the observed estimate under the null.
 
 \end{frame}
 
@@ -1507,7 +1584,8 @@ ggplot(null_dist, aes(x = bin_mid, y = count)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Build the one-sided (lower-tail) p-value: how often does the shuffled estimate fall \emph{below} the observed estimate?
+\item Visually, this is the left tail beyond $\hat\\tau^{obs}$.
 \end{itemize}
 \\~\
 }
@@ -1517,7 +1595,7 @@ ggplot(null_dist, aes(x = bin_mid, y = count)) +
 
 
 \begin{center}
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE, out.width='0.9\\textwidth'>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, out.width='0.55\\textwidth'>>=
 ggplot(null_dist, aes(x = bin_mid, y = count, fill = col2)) +
   geom_col() +
   geom_vline(xintercept = 0, color = 'red') + 
@@ -1527,9 +1605,9 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col2)) +
 \end{center}
 
 
-<<>>=
-(pval <- mean(dm <= dm_hat))
-@
+\[
+p = \Pr_0[\hat{\tau} \le \hat{\tau}^{obs}] \approx \Sexpr{round(pval_lower, 3)}
+\]
 
 
 \end{frame}
@@ -1540,7 +1618,8 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col2)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Shaded bins correspond to the probability mass counted in the one-sided p-value.
+\item Use this to reinforce the definition: a p-value is always ``probability under the null of something at least as extreme''.
 \end{itemize}
 \\~\
 }
@@ -1558,7 +1637,8 @@ Suppose $\hat{\theta}$ is the general form for an estimate produced by our estim
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item We now generalize beyond this example: define p-values in terms of a generic statistic $\\hat\\theta$ and its null distribution.
+\item The key object is the probability distribution under $H_0$ (from randomization, or later from approximations).
 \end{itemize}
 \\~\
 }
@@ -1578,7 +1658,7 @@ i.e., the probability \textit{under the null distribution} that we would see an 
 \begin{figure}
 \centering
 \resizebox{0.4\textwidth}{!}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 ggplot(null_dist, aes(x = bin_mid, y = count, fill = col2)) +
   geom_col() +
   geom_vline(xintercept = 0, color = 'red') + 
@@ -1595,7 +1675,8 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col2)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Lower one-tailed p-value: evidence for negative effects / unusually small statistics.
+\item Emphasize the subscript 0: probability is evaluated under the null.
 \end{itemize}
 \\~\
 }
@@ -1616,7 +1697,7 @@ i.e., the probability \textit{under the null distribution} that we would see an 
 \begin{figure}
 \centering
 \resizebox{0.4\textwidth}{!}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 null_dist$col3 <- null_dist$bin_min >= dm_hat
 ggplot(null_dist, aes(x = bin_mid, y = count, fill = col3)) +
   geom_col() +
@@ -1634,7 +1715,8 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col3)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Upper one-tailed p-value: evidence for positive effects / unusually large statistics.
+\item Same idea, opposite tail.
 \end{itemize}
 \\~\
 }
@@ -1654,7 +1736,7 @@ i.e., the probability \textit{under the null distribution} that we would see an 
 \begin{figure}
 \centering
 \resizebox{0.4\textwidth}{!}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 ggplot(null_dist, aes(x = bin_mid, y = count, fill = col)) +
   geom_col() +
   geom_vline(xintercept = 0, color = 'red') + 
@@ -1672,7 +1754,8 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col)) +
 \scriptsize \singlespacing
 
 \begin{itemize}
-\item xxxx
+\item Two-tailed p-value counts extremeness in both directions (absolute value).
+\item Appropriate when theory does not specify direction, or when deviations in either direction matter.
 \end{itemize}
 \\~\
 }
@@ -1697,7 +1780,7 @@ ggplot(null_dist, aes(x = bin_mid, y = count, fill = col)) +
 \begin{frame}[fragile]{Frametitle}
 
 \begin{center}
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE, out.width='0.9\\textwidth'>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, out.width='0.7\\textwidth'>>=
 hist(rnorm(10))
 @
 \end{center}
@@ -1757,8 +1840,3 @@ hist(rnorm(10))
 }
 
 %-------------------------------------------------------------------------------%
-% <<echo = FALSE>>=
-% f <- 'slides_51.Rnw'
-% knitr::purl(f)
-% knitr::Sweave2knitr(f)
-% @

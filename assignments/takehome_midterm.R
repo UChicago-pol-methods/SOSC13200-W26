@@ -1,5 +1,5 @@
 #' ---
-#' title: "Take-home midterm, Social Science Inquiry II (SOSC13200-W26-3)"
+#' title: "Take-Home Midterm, Social Science Inquiry II (SOSC13200-W26-3)"
 #' author: "<your name here>"
 #' date: "Friday 2/6/26 at 11:59pm"
 #' output: pdf_document

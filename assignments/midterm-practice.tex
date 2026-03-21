@@ -272,6 +272,138 @@ You are given group means:
 \end{enumerate}
 
 \newpage
+\section*{Solutions}
+
+\noindent\textbf{Problem 1: Inference, measurement, and research design}
+\begin{enumerate}[label=\arabic*.]
+  \item Descriptive inference: summarizing patterns in observed data (e.g., ``In 2025, 62\% of surveyed students reported voting.''). Causal inference: estimating the effect of a treatment/condition (e.g., ``Receiving a GOTV text increased turnout by 4 percentage points.'').
+  \item Two features (KKV): The goal is inference beyond the observed data, not mere description. Procedures are public and replicable, so others can evaluate and reproduce the logic and evidence.
+  \item Hard-to-measure concept: political trust. Operationalization: average of Likert-scale survey items about confidence in government institutions.
+  \item Unit of analysis: fast-food workers (or restaurants) whose wages are observed. Target population: fast-food workers (or establishments) in the jurisdictions affected by the minimum wage policy.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 2: Causal assumptions}
+\begin{enumerate}[label=\arabic*.]
+  \item \emph{Assumption:} Independence. \emph{Why:} people who request upgrades likely differ from others in ways related to walking at night.
+  \item \emph{Assumption:} Unit homogeneity. \emph{Why:} the Loop may differ systematically from other neighborhoods (baseline activity, demographics).
+  \item \emph{Assumption:} Unit homogeneity (external validity). \emph{Why:} Loop blocks may not represent citywide blocks, so effects may differ elsewhere.
+  \item \emph{Assumption:} Temporal stability. \emph{Why:} day-to-day differences could be driven by short-term shocks unrelated to lighting.
+  \item \emph{Assumption:} Causal transience. \emph{Why:} effects may fade or change over a week as people adapt.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 3A: Jury}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\Omega=\{\text{CCC}, \text{CCA}, \text{CAC}, \text{CAA}, \text{ACC}, \text{ACA}, \text{AAC}, \text{AAA}\}$.
+  \item Let $p(\text{CC})=0.25$, $p(\text{AA})=0.25$, $p(\text{CA})=0.25$, $p(\text{AC})=0.25$. Then
+  \[
+  \Pr[\text{CCC}]=0.25(0.9)=0.225,\quad
+  \Pr[\text{CCA}]=0.25(0.1)=0.025,
+  \]
+  \[
+  \Pr[\text{AAA}]=0.25(0.9)=0.225,\quad
+  \Pr[\text{AAC}]=0.25(0.1)=0.025,
+  \]
+  \[
+  \Pr[\text{CAC}]=0.25(0.5)=0.125,\quad
+  \Pr[\text{CAA}]=0.25(0.5)=0.125,
+  \]
+  \[
+  \Pr[\text{ACC}]=0.25(0.5)=0.125,\quad
+  \Pr[\text{ACA}]=0.25(0.5)=0.125.
+  \]
+  Hence $\Pr[X=0]=0.225$, $\Pr[X=1]=0.025+0.125+0.125=0.275$, $\Pr[X=2]=0.025+0.125+0.125=0.275$, $\Pr[X=3]=0.225$.
+  \item $\Pr[Y=1]=\Pr[X\ge2]=0.275+0.225=0.50$, $\Pr[Y=0]=0.50$.
+  \item $A=\{X=2\}$ and $B=\{Y=1\}$. Then $\Pr[A]=0.275$, $\Pr[B]=0.50$, $\Pr[A\cap B]=\Pr[X=2]=0.275 \neq 0.275\times0.50$, so not independent.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 3B: On-time submissions}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\Omega=\{\text{TTT}, \text{TTL}, \text{TLT}, \text{TLL}, \text{LTT}, \text{LTL}, \text{LLT}, \text{LLL}\}$.
+  \item Compute joint probabilities with $p(A=\text{T})=0.7$, $p(B=\text{T})=0.6$ and the conditional rules for $C$:
+  \[
+  \Pr[\text{TTT}]=0.7\cdot0.6\cdot0.9=0.378,\quad
+  \Pr[\text{TTL}]=0.7\cdot0.6\cdot0.1=0.042,
+  \]
+  \[
+  \Pr[\text{TLT}]=0.7\cdot0.4\cdot0.5=0.140,\quad
+  \Pr[\text{TLL}]=0.7\cdot0.4\cdot0.5=0.140,
+  \]
+  \[
+  \Pr[\text{LTT}]=0.3\cdot0.6\cdot0.5=0.090,\quad
+  \Pr[\text{LTL}]=0.3\cdot0.6\cdot0.5=0.090,
+  \]
+  \[
+  \Pr[\text{LLT}]=0.3\cdot0.4\cdot0.1=0.012,\quad
+  \Pr[\text{LLL}]=0.3\cdot0.4\cdot0.9=0.108.
+  \]
+  Thus $\Pr[X=0]=0.108$, $\Pr[X=1]=0.012+0.090+0.140=0.242$, $\Pr[X=2]=0.042+0.140+0.090=0.272$, $\Pr[X=3]=0.378$.
+  \item $\Pr[Y=1]=\Pr[X\ge2]=0.272+0.378=0.650$, $\Pr[Y=0]=0.350$.
+  \item $\Pr(A=\text{T})=0.7$, and $\Pr(Y=1\mid A=\text{T})=(0.378+0.042+0.140)/(0.378+0.042+0.140+0.140)=0.560/0.700=0.80$, so not independent.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 4A: Bayes (Democrat classifier)}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\Pr[F]=0.80(0.40)+0.30(0.60)=0.50$.
+  \item $\Pr[A\mid F]=\frac{0.80\cdot0.40}{0.50}=0.64$.
+  \item $\Pr[A\mid F^c]=\frac{0.20\cdot0.40}{0.50}=0.16$.
+  \item Conditioning reverses the denominator; $\Pr[A\mid F]$ depends on the base rate $\Pr[A]$, whereas $\Pr[F\mid A]$ does not. Confusing them is the base-rate fallacy (prosecutor's fallacy).
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 4B: Bayes (plagiarism)}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\Pr[F]=0.85(0.07)+0.12(0.93)=0.1761$.
+  \item $\Pr[P\mid F]=\frac{0.85\cdot0.07}{0.1761}\approx0.338$.
+  \item $\Pr[P\mid F^c]=\frac{0.15\cdot0.07}{0.8239}\approx0.0127$.
+  \item The base rate $\Pr[P]$ strongly affects $\Pr[P\mid F]$: even with a high true positive rate, a low base rate keeps the posterior modest.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 4C: Bayes (rare voting)}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\Pr[F]=0.90(0.10)+0.20(0.90)=0.27$.
+  \item $\Pr[V\mid F]=\frac{0.90\cdot0.10}{0.27}\approx0.333$.
+  \item $\Pr[V\mid F^c]=\frac{0.10\cdot0.10}{0.73}\approx0.0137$.
+  \item The small base rate $\Pr[V]$ keeps $\Pr[V\mid F]$ relatively low despite high sensitivity.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 4C (counts)}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\Pr[F]=\frac{4500+800}{10000}=0.53$.
+  \item $\Pr[V\mid F]=\frac{4500}{5300}\approx0.849$.
+  \item $\Pr[V\mid F^c]=\frac{1500}{4700}\approx0.319$.
+  \item Reporting only the true positive rate ignores false positives and base rates, which can make a classifier look better than it is in practice.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 5A: Bed nets and spillovers}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Spillovers mean $Y_i$ depends on others' treatment, not just $i$'s own assignment.
+  \item Randomize by village to reduce contamination across households and to align with implementation logistics.
+  \item No-interference fails because control outcomes are affected by treated neighbors; positive spillovers attenuate treated--control differences.
+  \item Use cluster randomization with buffer zones or model exposure to treated neighbors.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 5B: Peer effects in education}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item Randomize at school to limit spillovers across classrooms and to simplify implementation and compliance.
+  \item Positive spillovers raise control outcomes, so the treated--control difference is attenuated.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\textbf{Problem 6: Wald estimator}
+\begin{enumerate}[label=\arabic*\alph*)]
+  \item $\hat\beta_{\text{Wald}}=\dfrac{0.08-0.10}{0.60-0.45}=\dfrac{-0.02}{0.15}\approx-0.133$.
+  \item Reduced form: $\bar Y_{Z=1}-\bar Y_{Z=0}$. First stage: $\bar X_{Z=1}-\bar X_{Z=0}$.
+\end{enumerate}
+
+\newpage
 \bibliographystyle{apalike}
 \nocite{butler2011politicians,angrist1991does,miguel2004worms,cardkrueger1994minimum}
 \bibliography{../assets/bib}

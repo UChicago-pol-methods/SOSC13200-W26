@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames},handout]{beamer}
+% !Rnw weave = knitr
+\documentclass[handout,xcolor=dvipsnames]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 \usepackage{verbatim}
@@ -19,10 +20,13 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 <<setup, include=FALSE, echo = FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs42/")
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE,
+  fig.path = "figs42/"
+)
 if (!dir.exists("figs42")) dir.create("figs42")
 @
 
@@ -34,7 +38,7 @@ if (!dir.exists("figs42")) dir.create("figs42")
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 
-<<packages>>=
+<<packages, warning=FALSE>>=
 library(ggplot2)
 @
 
@@ -81,7 +85,7 @@ library(ggplot2)
 
 \begin{figure}
 \centering
-\includegraphics{../assets/nobels19.jpeg}
+\includegraphics[width=\textwidth]{../assets/nobels19.jpeg}
 \caption{Esther Duflo, Michael Kremer, and Abhijit Banerjee}
 \end{figure}
 

@@ -10,7 +10,9 @@ library(modelsummary)
 
 #' 
 #' ## Reading in the data 
-file <- "https://raw.githubusercontent.com/UChicago-pol-methods/SOSC13200-W26/main/data/card-krueger.csv"
+file_local <- "data/card-krueger.csv"
+file_url <- "https://raw.githubusercontent.com/UChicago-pol-methods/SOSC13200-W26/main/data/card-krueger.csv"
+file <- if (file.exists(file_local)) file_local else file_url
 dat <- read.csv(file, as.is = TRUE)
 
 #+ eval = FALSE
@@ -144,38 +146,45 @@ coef(lm0b)['d:nj']
 
 #' Table 4
 #' 
-# Reshaping data for analysis
-dat_wide <- reshape(dat, direction = 'wide', idvar = 'id', 
-                    v.names = c('fte', 'ft', 'pt', 'mgrs', 'wage', 'meal', 'hrsopen', 'bonus',
-                                'ncalls','inctime','firstinc','nregs'),
-                    drop = c('d_nj', 'Wave'),
-                    timevar = 'd')
-dat_wide$Y <- dat_wide$fte.1-dat_wide$fte.0
+# Table 4 footnote restriction: 357 stores with non-missing employment in both
+# waves and non-missing starting wage in wave 1. The 6 permanently closed stores
+# (status == 3) are kept even though their wave-2 starting wage is missing.
+w1 <- dat[dat$d == 0, c(
+  "id", "nj", "fte", "wage",
+  "bk", "kfc", "roys", "wendys", "co_owned",
+  "centralj", "southj", "pa1", "pa2",
+  "status"
+)]
+w2 <- dat[dat$d == 1, c("id", "fte", "wage")]
+
+table4 <- merge(w1, w2, by = "id", suffixes = c("_w1", "_w2"))
+table4$Y <- table4$fte_w2 - table4$fte_w1
 
 # discuss coding of gap
-dat_wide$gap <- ifelse(dat_wide$nj==1 & dat_wide$wage.0<= 5.05,
-                       ((5.05-dat_wide$wage.0)/dat_wide$wage.0),0)
+table4$gap <- ifelse(
+  table4$nj == 1 & table4$wage_w1 <= 5.05,
+  (5.05 - table4$wage_w1) / table4$wage_w1,
+  0
+)
 
-# conditioning variables, based on table footnote
-dat_wide <- dat_wide[which( !is.na(dat_wide$Y) &
-                              !is.na(dat_wide$wage.0) &
-                              !is.na(dat_wide$wage.1)),]
+is_closed <- table4$status == 3
+table4 <- table4[
+  !is.na(table4$fte_w1) &
+    !is.na(table4$fte_w2) &
+    !is.na(table4$wage_w1) &
+    (!is.na(table4$wage_w2) | is_closed),
+]
 
-(lm1 <- lm_robust(Y ~ nj, data = dat_wide))
-(lm2 <- lm_robust(Y ~ nj + bk + kfc + roys + wendys + co_owned, data = dat_wide))
+# Table 4 footnote statistics: mean = -0.237 and SD = 8.825
+nrow(table4)
+mean(table4$Y)
+sd(table4$Y)
+
+(lm1 <- lm_robust(Y ~ nj, data = table4))
+(lm2 <- lm_robust(Y ~ nj + bk + kfc + roys + wendys + co_owned, data = table4))
 # why do we drop one variable?
-(lm3 <- lm_robust(Y ~ gap, data = dat_wide))
-(lm4 <- lm_robust(Y ~ gap + bk + kfc + roys + wendys + co_owned, data = dat_wide))
-(lm5 <- lm_robust(Y ~ gap + bk + kfc + roys + wendys + co_owned + centralj + southj + pa1 + pa2, data = dat_wide))
-
-
-# Why are estimates are slightly off? The conditioning variables don't align exactly with how they're described in table 4 note. 
-# Should be 357 stores, but if we exclude all with missing outcome, missing starting wages in both waves, we get 351
-nrow(dat_wide)
-mean(dat_wide$Y)
-# Should be - 0.237
-sd(dat_wide$Y, na.rm = TRUE)
-# Should be 8.825
-
+(lm3 <- lm_robust(Y ~ gap, data = table4))
+(lm4 <- lm_robust(Y ~ gap + bk + kfc + roys + wendys + co_owned, data = table4))
+(lm5 <- lm_robust(Y ~ gap + bk + kfc + roys + wendys + co_owned + centralj + southj + pa1 + pa2, data = table4))
 
 

@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames}, handout]{beamer}
+% !Rnw weave = knitr
+\documentclass[handout,xcolor=dvipsnames]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 \usepackage{verbatim}
@@ -34,12 +35,15 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo = FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs72/")
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE,
+  fig.path = "figs72/"
+)
 if (!dir.exists("figs72")) dir.create("figs72")
 options(modelsummary_factory_default = "kableExtra")
 options(modelsummary_factory_latex = "kableExtra")
@@ -75,10 +79,11 @@ options(modelsummary_factory_latex = "kableExtra")
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 
-<<packages>>=
+<<packages, message = FALSE, warning = FALSE>>=
 library(ggplot2)
 library(estimatr)
 library(modelsummary)
+config_modelsummary(startup_message = FALSE)
 @
 
 \end{frame}
@@ -127,11 +132,14 @@ head(dat)
 }
 
 %-------------------------------------------------------------------------------%
-\begin{frame}[fragile]{Reading in the data}
-\tiny
-<<>>=
-str(dat)
-@
+\begin{frame}{Reading in the data}
+\begin{itemize}
+\item The Card and Krueger dataset tracks fast-food employment before and after the New Jersey minimum-wage change.
+\item The working dataset has \Sexpr{nrow(dat)} observations and \Sexpr{ncol(dat)} variables.
+\end{itemize}
+
+\scriptsize
+The main variables summarize employment counts, treatment status, and restaurant-chain controls.
 
 
 
@@ -305,7 +313,7 @@ $$
 %-------------------------------------------------------------------------------%
 \begin{frame}{Table 4}
 
-<<echo = FALSE>>=
+<<echo = FALSE, include = FALSE, warning = FALSE, message = FALSE>>=
 dat_wide <- reshape(dat, direction = 'wide', idvar = 'id', 
                     v.names = c('fte', 'ft', 'pt', 'mgrs', 'wage', 'meal', 'hrsopen', 'bonus',
                                 'ncalls','inctime','firstinc','nregs'),
@@ -346,7 +354,7 @@ cat(tab4, file = '../assets/card-krueger-table4.tex')
 
 \begin{center}
 \scriptsize
-\input{../assets/card-krueger-table4.tex}
+\resizebox{\textwidth}{!}{\input{../assets/card-krueger-table4.tex}}
 \end{center}
 
 \end{frame}
@@ -386,7 +394,7 @@ cat(tab4, file = '../assets/card-krueger-table4.tex')
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 hist(rnorm(10))
 @
 }

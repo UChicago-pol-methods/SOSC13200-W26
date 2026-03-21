@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames}, handout]{beamer}
+% !Rnw weave = knitr
+\documentclass[handout,xcolor=dvipsnames]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 
@@ -19,7 +20,10 @@
 \begin{document}
 
 <<setup, include=FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE)
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE
+)
 @
 
 
@@ -186,7 +190,7 @@ What data would you need to make the argument in the article below?
 
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=.8\textwidth]{../assets/guardian.png} 
+   \includegraphics[width=\textwidth]{../assets/guardian.png} 
    % \caption{example caption}
    % \label{fig:example}
 \end{figure}
@@ -437,9 +441,12 @@ Other questions/concerns about class policies?
 %-------------------------------------------------------------------------------%
 \begin{frame}{Getting started in R}
 
-\begin{center}
-{[} R script {]}
-\end{center}
+\begin{itemize}
+\item Open the course project in RStudio.
+\item Write code in an \texttt{.R} script instead of only in the console.
+\item Run commands a line at a time so you can check what each step does.
+\item Save your script with comments so you can rerun your work later.
+\end{itemize}
 
 \end{frame}
 

@@ -1,4 +1,5 @@
-\documentclass[xcolor={dvipsnames}, handout]{beamer}
+% !Rnw weave = knitr
+\documentclass[handout,xcolor=dvipsnames]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 
@@ -37,12 +38,15 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo = FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs71/")
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE,
+  fig.path = "figs71/"
+)
 if (!dir.exists("figs71")) dir.create("figs71")
 options(modelsummary_factory_default = "kableExtra")
 options(modelsummary_factory_latex = "kableExtra")
@@ -54,9 +58,10 @@ options(modelsummary_factory_latex = "kableExtra")
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 
-<<packages>>=
+<<packages, message = FALSE>>=
 library(estimatr)
 library(modelsummary)
+config_modelsummary(startup_message = FALSE)
 @
 
 \end{frame}
@@ -250,16 +255,21 @@ These areas were selected based on having no preexisting microfinance presence a
 }
 
 %-------------------------------------------------------------------------------%
-\begin{frame}[fragile]%{Frametitle}
+\begin{frame}{Data overview}
 
 Too many variables\dots
 \tiny
-<<>>=
+<<echo = FALSE, include = FALSE>>=
 dat <- read.csv('../data/banerjee-et-al.csv')
-
-str(dat)
 @
 
+\begin{itemize}
+\item The raw dataset has \Sexpr{nrow(dat)} observations and \Sexpr{ncol(dat)} variables.
+\item It combines treatment assignment, borrowing outcomes, and area-level baseline controls.
+\end{itemize}
+
+\scriptsize
+Key outcomes here include \texttt{spandana\_1}, \texttt{anymfi\_1}, \texttt{anyloan\_1}, \texttt{everlate\_1}, and \texttt{mfi\_loan\_cycles\_1}.
 
 \end{frame}
 
@@ -277,7 +287,7 @@ str(dat)
 %-------------------------------------------------------------------------------%
 \begin{frame}{Table 2, Panel A}
 
-<<table2, echo = FALSE>>=
+<<table2, echo = FALSE, include = FALSE, warning = FALSE, message = FALSE>>=
 area_controls <- c('area_pop_base', 
                    'area_debt_total_base', 'area_business_total_base', 'area_exp_pc_mean_base', 'area_literate_head_base', 'area_literate_base')
 
@@ -307,7 +317,7 @@ cat(tab2, file = '../assets/banerjee-et-al-table2.tex')
 
 \begin{center}
 \scriptsize
-\input{../assets/banerjee-et-al-table2.tex}
+\resizebox{\textwidth}{!}{\input{../assets/banerjee-et-al-table2.tex}}
 \end{center}
 
 \end{frame}
@@ -521,7 +531,7 @@ $$\pause
 
 \begin{center}
 \scriptsize
-\input{../assets/banerjee-et-al-table2.tex}
+\resizebox{\textwidth}{!}{\input{../assets/banerjee-et-al-table2.tex}}
 \end{center}
 
 \end{frame}
@@ -541,7 +551,7 @@ $$\pause
 \begin{frame}[fragile]%{Frametitle}
 
 \scriptsize
-<<>>=
+<<echo = FALSE, include = FALSE>>=
 
 formula1 <- formula(paste0('spandana_1 ~ treatment', 
                            '+ area_pop_base',
@@ -551,9 +561,20 @@ formula1 <- formula(paste0('spandana_1 ~ treatment',
                            '+ area_literate_head_base',
                            '+ area_literate_base'))
 
-lm_robust(formula1, data = dat, clusters = areaid, weights = w1)
+fit_ctrl <- lm_robust(formula1, data = dat, clusters = areaid, weights = w1)
 @
 
+\begin{itemize}
+\item With area controls, the treatment estimate is
+\[
+\hat{\tau} = \Sexpr{round(coef(fit_ctrl)['treatment'], 3)}
+\]
+\item Its 95\% confidence interval is
+\[
+\left[\Sexpr{round(confint(fit_ctrl)['treatment', 1], 3)},\ \Sexpr{round(confint(fit_ctrl)['treatment', 2], 3)}\right]
+\]
+\item The treatment effect remains positive and substantively similar to the version without controls.
+\end{itemize}
 
 
 \end{frame}
@@ -652,7 +673,7 @@ lm_robust(formula2, data = dat, clusters = areaid, weights = w1)
 
 \begin{center}
 \scriptsize
-\input{../assets/banerjee-et-al-table2.tex}
+\resizebox{\textwidth}{!}{\input{../assets/banerjee-et-al-table2.tex}}
 \end{center}
 
 \end{frame}
@@ -671,7 +692,7 @@ lm_robust(formula2, data = dat, clusters = areaid, weights = w1)
 %-------------------------------------------------------------------------------%
 \begin{frame}{Table 2, Panel A, without controls}
 
-<<table2alt, echo = FALSE>>=
+<<table2alt, echo = FALSE, include = FALSE, warning = FALSE, message = FALSE>>=
 
 lm_list_alt<- list()
 for(out in outcomes){
@@ -693,7 +714,7 @@ cat(tab2_alt, file = '../assets/banerjee-et-al-table2alt.tex')
 
 \begin{center}
 \scriptsize
-\input{../assets/banerjee-et-al-table2alt.tex}
+\resizebox{\textwidth}{!}{\input{../assets/banerjee-et-al-table2alt.tex}}
 \end{center}
 
 \end{frame}
@@ -798,7 +819,7 @@ cat(tab2_alt, file = '../assets/banerjee-et-al-table2alt.tex')
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 hist(rnorm(10))
 @
 }
@@ -862,5 +883,4 @@ hist(rnorm(10))
 <<echo = FALSE>>=
 f <- 'slides_71.Rnw'
 knitr::purl(f)
-knitr::Sweave2knitr(f)
 @

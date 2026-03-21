@@ -6,7 +6,7 @@ Quantitative methods course covering data analysis, statistical inference, and c
 
 ## Structure
 
-- `slides/` - Lecture slides (Sweave → PDF)
+- `slides/` - Lecture slides (knitr `.Rnw` → PDF)
 - `assignments/` - Homework templates
 - `in-class/` - Live coding examples
 - `data/` - Datasets 

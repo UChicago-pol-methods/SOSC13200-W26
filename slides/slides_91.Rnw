@@ -1,3 +1,4 @@
+% !Rnw weave = knitr
 \documentclass[xcolor=dvipsnames, handout]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
@@ -30,12 +31,15 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo = FALSE>>=
-knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs91/")
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
+knitr::opts_chunk$set(
+  concordance = TRUE,
+  fig.path = "figs91/"
+)
 if (!dir.exists("figs91")) dir.create("figs91")
 @
 %-------------------------------------------------------------------------------%
@@ -50,7 +54,7 @@ options(scipen=1, digits=4)
 %-------------------------------------------------------------------------------%
 \begin{frame}[fragile]{Loading packages for this class}
 
-<<packages>>=
+<<packages, warning=FALSE>>=
 set.seed(60637)
 # For plotting:
 library(ggplot2)
@@ -679,16 +683,16 @@ Show the underlying data.
 ggplot(iris, aes(Species, Sepal.Length,fill = Species)) +
     geom_violin(alpha = 0.25, color = NA) +
     geom_point(position = position_jitter(width = 0.3, height = 0), size = 0.5) +
-    geom_hpline(aes(colour = Species), stat = "summary", width = 0.6, size = 1.5, fun = 'mean')
+    geom_hpline(aes(colour = Species), stat = "summary", width = 0.6, linewidth = 1.5, fun = 'mean')
 @
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.65\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, warning=FALSE, message=FALSE>>=
 ggplot(iris, aes(Species, Sepal.Length,fill = Species)) +
     geom_violin(alpha = 0.25, color = NA) +
     geom_point(position = position_jitter(width = 0.3, height = 0), size = 0.5) +
-    geom_hpline(aes(colour = Species), stat = "summary", width = 0.6, size = 1.5, fun = 'mean') + 
+    geom_hpline(aes(colour = Species), stat = "summary", width = 0.6, linewidth = 1.5, fun = 'mean') + 
     theme_bw() +
     ylab('Sepal Length')
 @
@@ -718,12 +722,12 @@ Shaded confidence strips.
 ggplot(cacao_means, aes(x = estimate, y = location)) +
     stat_confidence_density(aes(moe = std.error), confidence = 0.68, fill = "#81A7D6", height = 0.7) +
     geom_errorbarh(aes(xmin = estimate - std.error, xmax = estimate + std.error), height = 0.3) +
-    geom_vpline(aes(x = estimate), size = 1.5, height = 0.7, color = "#D55E00")
+    geom_vpline(aes(x = estimate), linewidth = 1.5, height = 0.7, color = "#D55E00")
 @
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.65\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, warning=FALSE, message=FALSE>>=
 library(dplyr)
 library(forcats)
 library(broom)
@@ -742,7 +746,7 @@ cacao_means <- lm(rating ~ location, data = cacao_lumped) %>%
 ggplot(cacao_means, aes(x = estimate, y = location)) +
     stat_confidence_density(aes(moe = std.error), confidence = 0.68, fill = "#81A7D6", height = 0.7) +
     geom_errorbarh(aes(xmin = estimate - std.error, xmax = estimate + std.error), height = 0.3) +
-    geom_vpline(aes(x = estimate), size = 1.5, height = 0.7, color = "#D55E00") +
+    geom_vpline(aes(x = estimate), linewidth = 1.5, height = 0.7, color = "#D55E00") +
     xlim(2.8, 3.6) + 
     theme_bw() 
 @
@@ -771,21 +775,21 @@ Confidence densities.
 <<eval = FALSE, echo=TRUE>>=
 ggplot(cacao_means, aes(x = estimate, y = location)) +
     stat_confidence_density(
-        aes(moe = std.error, height = stat(density)), geom = "ridgeline",
+        aes(moe = std.error, height = after_stat(density)), geom = "ridgeline",
         confidence = 0.68, fill = "#81A7D6", alpha = 0.8, scale = 0.08, min_height = 0.1) +
-    geom_vpline(aes(x = estimate), size = 1.5, height = 0.5, color = "#D55E00")
+    geom_vpline(aes(x = estimate), linewidth = 1.5, height = 0.5, color = "#D55E00")
 @
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.65\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE, warning=FALSE, message=FALSE>>=
 ggplot(cacao_means, aes(x = estimate, y = location)) +
     stat_confidence_density(
-        aes(moe = std.error, height = stat(density)), geom = "ridgeline",
+        aes(moe = std.error, height = after_stat(density)), geom = "ridgeline",
         confidence = 0.68, fill = "#81A7D6", alpha = 0.8, scale = 0.08,
         min_height = 0.1
     ) +
-    geom_vpline(aes(x = estimate), size = 1.5, height = 0.5, color = "#D55E00") +
+    geom_vpline(aes(x = estimate), linewidth = 1.5, height = 0.5, color = "#D55E00") +
     xlim(2.8, 3.6) + 
     theme_bw()
 @
@@ -828,7 +832,7 @@ Clause Wilke: \url{https://wilkelab.org/ungeviz/index.html}
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, fig.width = 5, fig.height =5, echo=FALSE>>=
+<<fig.width = 5, fig.height =5, echo=FALSE>>=
 hist(rnorm(10))
 @
 }
@@ -894,6 +898,5 @@ f <- 'slides_91.Rnw'
 if (!file.exists(f)) f <- 'slides/slides_91.Rnw'
 if (file.exists(f) && requireNamespace("knitr", quietly = TRUE)) {
   knitr::purl(f)
-  knitr::Sweave2knitr(f)
 }
 @

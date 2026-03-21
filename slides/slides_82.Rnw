@@ -1,4 +1,5 @@
-\documentclass[xcolor=dvipsnames]{beamer}
+% !Rnw weave = knitr
+\documentclass[xcolor=dvipsnames, handout]{beamer}
 
 \usepackage{../assets/pres-template_MOW}
 \usepackage{verbatim}
@@ -27,6 +28,7 @@
 
 %-------------------------------------------------------------------------------%
 <<setup, include=FALSE, echo = FALSE>>=
+knitr::opts_knit$set(root.dir = dirname(knitr::current_input()))
 knitr::opts_chunk$set(concordance = TRUE, fig.path = "figs82/",
                       message = FALSE, warning = FALSE)
 if (!dir.exists("figs82")) dir.create("figs82")
@@ -110,7 +112,7 @@ $H_A$ is true & Correct (power $= 1-\beta$) & Type II error ($\beta$) \\
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.72\textheight}{
-<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 4>>=
+<<echo = FALSE, fig.width = 7, fig.height = 4>>=
 alpha <- 0.05
 n <- 50
 sd_y <- 1
@@ -249,7 +251,7 @@ If power = 0.30, what does that mean?
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.62\textheight}{
-<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 3.6>>=
+<<echo = FALSE, fig.width = 7, fig.height = 3.6>>=
 alpha <- 0.05
 power_target <- 0.80
 delta <- 0.30
@@ -356,7 +358,7 @@ cat(sprintf(
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.72\textheight}{
-<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 4>>=
+<<echo = FALSE, fig.width = 7, fig.height = 4>>=
 alpha <- 0.05
 power_target <- 0.80
 sd_y <- 1
@@ -429,7 +431,7 @@ ggplot(df, aes(x = n, y = mde)) +
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.55\textheight}{
-<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 3.2>>=
+<<echo = FALSE, fig.width = 7, fig.height = 3.2>>=
 m <- 20
 icc_grid <- seq(0, 0.20, by = 0.005)
 deff <- 1 + (m - 1) * icc_grid
@@ -507,7 +509,7 @@ ggplot(df, aes(x = icc, y = neff_ratio)) +
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.75\textheight}{
-<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 4>>=
+<<echo = FALSE, fig.width = 7, fig.height = 4>>=
 alpha <- 0.05
 sd_y <- 1
 delta <- 0.30  # standardized effect (since sd_y = 1)
@@ -600,7 +602,7 @@ ggplot(df, aes(x = n)) +
 \begin{figure}
 \centering
 \resizebox{\textwidth}{0.55\textheight}{
-<<fig = TRUE, echo = FALSE, fig.width = 7, fig.height = 3.5>>=
+<<echo = FALSE, fig.width = 7, fig.height = 3.5>>=
 alpha <- 0.05
 n_per_group <- 50
 sd_y <- 1
